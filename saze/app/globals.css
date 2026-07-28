@@ -1,0 +1,92 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  /* Colors */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-gold: var(--gold);
+  --color-gold-muted: var(--gold-muted);
+  --color-navy: var(--navy);
+  --color-cream: var(--cream);
+
+  /* Radius */
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.5);
+
+  /* Fonts — variables injected by Next.js font loader */
+  --font-sans: var(--font-cormorant), 'Cormorant Garamond', 'Georgia', serif;
+  --font-serif: var(--font-cormorant), 'Cormorant Garamond', 'Georgia', serif;
+  --font-mono: 'Geist Mono', monospace;
+  --font-body: var(--font-jost), 'Jost', 'Inter', sans-serif;
+}
+
+:root {
+  color-scheme: light;
+  /* Deep navy/dark luxury palette */
+  --background: oklch(0.12 0.025 265);       /* Deep navy */
+  --foreground: oklch(0.96 0.01 85);          /* Warm cream/ivory */
+  --card: oklch(0.16 0.025 265);              /* Slightly lighter navy */
+  --card-foreground: oklch(0.94 0.012 85);   /* Cream */
+  --primary: oklch(0.75 0.12 85);             /* Gold */
+  --primary-foreground: oklch(0.12 0.025 265); /* Navy text on gold */
+  --secondary: oklch(0.20 0.025 265);         /* Dark navy secondary */
+  --secondary-foreground: oklch(0.94 0.012 85);
+  --muted: oklch(0.20 0.020 265);
+  --muted-foreground: oklch(0.65 0.02 85);    /* Muted cream */
+  --accent: oklch(0.75 0.12 85);              /* Gold accent */
+  --accent-foreground: oklch(0.12 0.025 265);
+  --border: oklch(0.28 0.025 265);            /* Subtle navy border */
+  --input: oklch(0.20 0.025 265);
+  --ring: oklch(0.75 0.12 85);
+  --gold: oklch(0.75 0.12 85);                /* Main gold */
+  --gold-muted: oklch(0.65 0.08 85);          /* Muted gold */
+  --navy: oklch(0.12 0.025 265);              /* Deep navy */
+  --cream: oklch(0.96 0.01 85);               /* Cream/ivory */
+  --radius: 0.5rem;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: var(--font-body), sans-serif;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-sans), serif;
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: oklch(0.12 0.025 265);
+}
+::-webkit-scrollbar-thumb {
+  background: oklch(0.45 0.05 265);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: oklch(0.75 0.12 85);
+}
