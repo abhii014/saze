@@ -1,120 +1,75 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import { useSearchParams } from 'next/navigation'
+import Link from 'next/link'
+import { Search, ArrowRight } from 'lucide-react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { products, categories, type Category } from '@/lib/products'
 import ProductCard from '@/components/product-card'
 
 const sortOptions = [
-  { value: 'featured', label: 'Featured' },
-  { value: 'price-asc', label: 'Price: Low to High' },
-  { value: 'price-desc', label: 'Price: High to Low' },
-  { value: 'name-az', label: 'Name A–Z' },
+  { value: 'featured', label: 'Featured first' },
+  { value: 'price-asc', label: 'Price: Low to high' },
+  { value: 'price-desc', label: 'Price: High to low' },
+  { value: 'name-az', label: 'Name: A–Z' },
 ]
 
 export default function ShopClient() {
+  const router = useRouter()
   const searchParams = useSearchParams()
-  const initialCat = (searchParams.get('category') as Category) ?? 'all'
-  const [selectedCategory, setSelectedCategory] = useState<Category>(
-    categories.some((c) => c.value === initialCat) ? initialCat : 'all'
-  )
+  const categoryParam = searchParams.get('category')
+  const selectedCategory: Category = categories.find((category) => category.value === categoryParam)?.value ?? 'all'
   const [sort, setSort] = useState('featured')
+  const [query, setQuery] = useState('')
+
+  function selectCategory(category: Category) {
+    const params = new URLSearchParams(searchParams.toString())
+    if (category === 'all') params.delete('category')
+    else params.set('category', category)
+    router.replace(`/shop${params.size ? `?${params.toString()}` : ''}`, { scroll: false })
+  }
 
   const filtered = useMemo(() => {
-    let list = selectedCategory === 'all' ? [...products] : products.filter((p) => p.category === selectedCategory)
+    const search = query.trim().toLowerCase()
+    const list = products.filter((product) =>
+      (selectedCategory === 'all' || product.category === selectedCategory) &&
+      `${product.name} ${product.tagline} ${product.category}`.toLowerCase().includes(search)
+    )
     switch (sort) {
-      case 'price-asc':
-        list = list.sort((a, b) => a.price - b.price)
-        break
-      case 'price-desc':
-        list = list.sort((a, b) => b.price - a.price)
-        break
-      case 'name-az':
-        list = list.sort((a, b) => a.name.localeCompare(b.name))
-        break
-      default:
-        list = list.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0))
+      case 'price-asc': return list.sort((a, b) => a.price - b.price)
+      case 'price-desc': return list.sort((a, b) => b.price - a.price)
+      case 'name-az': return list.sort((a, b) => a.name.localeCompare(b.name))
+      default: return list.sort((a, b) => Number(Boolean(b.featured)) - Number(Boolean(a.featured)))
     }
-    return list
-  }, [selectedCategory, sort])
+  }, [selectedCategory, sort, query])
 
   return (
     <>
-      {/* Filters row */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-6 border-b border-border">
-        {/* Category pills */}
-        <div className="flex flex-wrap gap-2">
-          {categories.map((cat) => (
-            <button
-              key={cat.value}
-              onClick={() => setSelectedCategory(cat.value)}
-              className={`px-4 py-2 rounded-full text-sm transition-all duration-200 ${
-                selectedCategory === cat.value
-                  ? 'bg-gold text-primary-foreground'
-                  : 'border border-border text-muted-foreground hover:border-gold hover:text-foreground'
-              }`}
-              style={{ fontFamily: 'var(--font-jost)' }}
-            >
-              {cat.label}
-            </button>
-          ))}
-        </div>
-
-        {/* Sort */}
-        <div className="flex items-center gap-2">
-          <label
-            htmlFor="sort-select"
-            className="text-xs text-muted-foreground"
-            style={{ fontFamily: 'var(--font-jost)' }}
-          >
-            Sort by
-          </label>
-          <select
-            id="sort-select"
-            value={sort}
-            onChange={(e) => setSort(e.target.value)}
-            className="bg-secondary border border-border text-foreground text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-gold transition-colors"
-            style={{ fontFamily: 'var(--font-jost)' }}
-          >
-            {sortOptions.map((opt) => (
-              <option key={opt.value} value={opt.value}>
-                {opt.label}
-              </option>
-            ))}
-          </select>
-        </div>
+      <div className="flex flex-wrap gap-2 mb-7" role="group" aria-label="Product categories">
+        {categories.map(({ value, label }) => <button type="button" key={value} onClick={() => selectCategory(value)} aria-pressed={selectedCategory === value}
+          className={`px-5 min-h-11 rounded-full border text-xs transition-colors ${selectedCategory === value ? 'bg-foreground text-background border-foreground' : 'border-border text-muted-foreground hover:border-foreground hover:text-foreground'}`}>{label}</button>)}
       </div>
-
-      {/* Count */}
-      <p
-        className="text-xs text-muted-foreground mb-6"
-        style={{ fontFamily: 'var(--font-jost)' }}
-      >
-        {filtered.length} {filtered.length === 1 ? 'piece' : 'pieces'}
-      </p>
-
-      {/* Grid */}
-      {filtered.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
-          {filtered.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
+      <div className="flex flex-col sm:flex-row gap-4 justify-between border-b border-border pb-6 mb-6">
+        <div className="relative sm:w-80">
+          <Search size={16} className="absolute left-3 top-3.5 text-muted-foreground" aria-hidden="true" />
+          <label htmlFor="collection-search" className="sr-only">Search the collection</label>
+          <input id="collection-search" type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Find your nail crush…" className="w-full bg-transparent border border-border rounded-sm pl-10 pr-4 py-3 text-xs" />
+        </div>
+        <div className="flex items-center gap-3"><label htmlFor="sort-select" className="text-xs text-muted-foreground">Sort by</label><select id="sort-select" value={sort} onChange={(event) => setSort(event.target.value)} className="border border-border bg-background rounded-sm px-3 py-3 text-xs">
+          {sortOptions.map(({ value, label }) => <option key={value} value={value}>{label}</option>)}
+        </select></div>
+      </div>
+      <p role="status" className="text-xs text-muted-foreground mb-7">{filtered.length} {filtered.length === 1 ? 'set' : 'sets'} to fall for</p>
+      {filtered.length ? (
+        <div key={`${selectedCategory}-${sort}`} className="collection-grid grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 gap-y-10 md:gap-x-7">
+          {filtered.map((product) => <ProductCard key={product.id} product={product} />)}
         </div>
       ) : (
-        <div className="text-center py-20">
-          <p
-            className="text-lg text-muted-foreground"
-            style={{ fontFamily: 'var(--font-cormorant), serif' }}
-          >
-            No products in this category yet.
-          </p>
-          <button
-            onClick={() => setSelectedCategory('all')}
-            className="mt-4 text-sm text-gold hover:underline"
-            style={{ fontFamily: 'var(--font-jost)' }}
-          >
-            View all products
-          </button>
+        <div className="text-center py-16">
+          <h2 className="font-serif text-4xl mb-4">{selectedCategory === 'custom' ? 'Something only you could dream up.' : 'Your perfect match is still out there.'}</h2>
+          <p className="text-sm text-muted-foreground mb-7">{selectedCategory === 'custom' ? 'Your palette, your occasion, your inspiration. Let’s create your one-of-a-kind set.' : 'Try another search or explore the full collection.'}</p>
+          {selectedCategory === 'custom' ? <Link href="/custom-order" className="button-primary">Explore custom designs <ArrowRight size={16} /></Link>
+            : <button type="button" onClick={() => { setQuery(''); selectCategory('all') }} className="button-outline">Show all sets</button>}
         </div>
       )}
     </>

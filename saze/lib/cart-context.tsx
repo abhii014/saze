@@ -1,7 +1,8 @@
 'use client'
 
-import React, { createContext, useContext, useReducer, useEffect } from 'react'
+import React, { createContext, useContext, useReducer, useEffect, useState } from 'react'
 import type { Product } from './products'
+import { getProductById } from './products'
 
 export interface CartItem {
   product: Product
@@ -61,34 +62,50 @@ interface CartContextValue {
   clearCart: () => void
   totalItems: number
   subtotal: number
+  isHydrated: boolean
 }
 
 const CartContext = createContext<CartContextValue | null>(null)
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(cartReducer, { items: [] })
+  const [isHydrated, setIsHydrated] = useState(false)
 
   // Hydrate from localStorage
   useEffect(() => {
     try {
       const saved = localStorage.getItem('saze-cart')
       if (saved) {
-        const items = JSON.parse(saved) as CartItem[]
-        dispatch({ type: 'HYDRATE', items })
+        const savedItems: unknown = JSON.parse(saved)
+        if (Array.isArray(savedItems)) {
+          const items: CartItem[] = []
+          for (const candidate of savedItems) {
+            if (!candidate || typeof candidate !== 'object') continue
+            const item = candidate as Partial<CartItem>
+            const product = getProductById(item.product?.id ?? '')
+            if (product?.available && typeof item.quantity === 'number' && Number.isSafeInteger(item.quantity) && item.quantity > 0) {
+              items.push({ product, quantity: item.quantity })
+            }
+          }
+          dispatch({ type: 'HYDRATE', items })
+        }
       }
     } catch {
       // ignore
+    } finally {
+      setIsHydrated(true)
     }
   }, [])
 
   // Persist to localStorage
   useEffect(() => {
+    if (!isHydrated) return
     try {
       localStorage.setItem('saze-cart', JSON.stringify(state.items))
     } catch {
       // ignore
     }
-  }, [state.items])
+  }, [state.items, isHydrated])
 
   const totalItems = state.items.reduce((sum, i) => sum + i.quantity, 0)
   const subtotal = state.items.reduce((sum, i) => sum + i.product.price * i.quantity, 0)
@@ -103,6 +120,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         clearCart: () => dispatch({ type: 'CLEAR_CART' }),
         totalItems,
         subtotal,
+        isHydrated,
       }}
     >
       {children}

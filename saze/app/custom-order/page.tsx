@@ -5,6 +5,7 @@ import { Sparkles, ArrowRight, Palette, Clock, MessageCircle } from 'lucide-reac
 import InstagramIcon from '@/components/icons/instagram-icon'
 import Navbar from '@/components/navbar'
 import Footer from '@/components/footer'
+import { INSTAGRAM_URL, INSTAGRAM_USERNAME } from '@/lib/instagram'
 
 const steps = [
   {
@@ -43,12 +44,12 @@ const inspirations = [
 ]
 
 export default function CustomOrderPage() {
-  const dmUrl = 'https://www.instagram.com/_saze.in_/'
+  const dmUrl = INSTAGRAM_URL
 
   return (
     <>
       <Navbar />
-      <main className="pt-20">
+      <main id="main-content" className="pt-28">
         {/* Header */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
           <nav
@@ -114,7 +115,7 @@ export default function CustomOrderPage() {
                         <Icon size={22} className="text-gold" />
                       </div>
                       <span
-                        className="absolute -top-1 -right-2 text-xs font-semibold text-gold/60"
+                        className="absolute -top-1 -right-2 text-xs font-semibold text-gold"
                         style={{ fontFamily: 'var(--font-jost)' }}
                       >
                         {step}
@@ -205,8 +206,6 @@ export default function CustomOrderPage() {
               </div>
               <a
                 href={dmUrl}
-                target="_blank"
-                rel="noopener noreferrer"
                 className="flex-shrink-0 flex items-center gap-2 bg-gold text-primary-foreground px-6 py-3 rounded-full text-sm font-medium hover:opacity-90 transition-opacity whitespace-nowrap"
                 style={{ fontFamily: 'var(--font-jost)', letterSpacing: '0.06em' }}
               >
@@ -242,8 +241,6 @@ export default function CustomOrderPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href={dmUrl}
-              target="_blank"
-              rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-2 bg-gold text-primary-foreground px-8 py-4 rounded-full text-sm font-medium hover:opacity-90 transition-opacity"
               style={{ fontFamily: 'var(--font-jost)', letterSpacing: '0.08em' }}
             >
@@ -264,13 +261,11 @@ export default function CustomOrderPage() {
           <div className="mt-10">
             <a
               href={dmUrl}
-              target="_blank"
-              rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-gold transition-colors"
               style={{ fontFamily: 'var(--font-jost)' }}
             >
               <InstagramIcon size={15} />
-              @_saze.in_
+              @{INSTAGRAM_USERNAME}
             </a>
           </div>
         </section>

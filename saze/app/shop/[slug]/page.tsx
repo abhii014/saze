@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import Navbar from '@/components/navbar'
 import Footer from '@/components/footer'
 import ProductDetailClient from '@/components/shop/product-detail-client'
-import { products, getProductById, formatPrice } from '@/lib/products'
+import { products, getProductById } from '@/lib/products'
 import type { Metadata } from 'next'
 
 export async function generateStaticParams() {
@@ -35,7 +35,7 @@ export default async function ProductPage({
   return (
     <>
       <Navbar />
-      <main className="pt-20">
+      <main id="main-content" className="pt-28 light-section pb-12">
         <ProductDetailClient product={product} />
       </main>
       <Footer />

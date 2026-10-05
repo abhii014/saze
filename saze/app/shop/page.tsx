@@ -1,6 +1,8 @@
 import Navbar from '@/components/navbar'
 import Footer from '@/components/footer'
 import ShopClient from '@/components/shop/shop-client'
+import { Suspense } from 'react'
+import Link from 'next/link'
 
 export const metadata = {
   title: 'Shop | SAZÉ',
@@ -11,20 +13,21 @@ export default function ShopPage() {
   return (
     <>
       <Navbar />
-      <main className="pt-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <main id="main-content" className="pt-28 light-section pb-20">
+        <div className="section-shell py-12 md:py-16">
           {/* Header */}
           <div className="mb-10">
             <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs text-muted-foreground mb-4" style={{ fontFamily: 'var(--font-jost)' }}>
-              <a href="/" className="hover:text-foreground transition-colors">Home</a>
+              <Link href="/" className="hover:text-foreground transition-colors">Home</Link>
               <span>/</span>
               <span className="text-foreground">Shop</span>
             </nav>
+            <p className="eyebrow mb-4 mt-8">A set for every version of you</p>
             <h1
-              className="text-5xl md:text-6xl font-light text-foreground"
+              className="display-heading text-foreground"
               style={{ fontFamily: 'var(--font-cormorant), serif' }}
             >
-              the shop
+              The little <em className="text-gold">glam collection.</em>
             </h1>
             <p
               className="text-muted-foreground mt-2 text-sm leading-relaxed"
@@ -34,7 +37,9 @@ export default function ShopPage() {
             </p>
           </div>
 
-          <ShopClient />
+          <Suspense fallback={<div role="status" className="py-16 text-sm text-muted-foreground">Finding your next nail crush…</div>}>
+            <ShopClient />
+          </Suspense>
         </div>
       </main>
       <Footer />

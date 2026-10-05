@@ -2,230 +2,82 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { Minus, Plus, Trash2, ShoppingBag } from 'lucide-react'
-import InstagramIcon from '@/components/icons/instagram-icon'
+import { Minus, Plus, Trash2, ShoppingBag, Copy, Check, ArrowRight } from 'lucide-react'
 import { useCart } from '@/lib/cart-context'
 import { formatPrice } from '@/lib/products'
 import { useState } from 'react'
-import InstagramOrderModal from '@/components/instagram-order-modal'
+import InstagramOrderLink from '@/components/instagram-order-link'
+import { buildOrderMessage, INSTAGRAM_USERNAME } from '@/lib/instagram'
 
 export default function CartClient() {
-  const { items, removeItem, updateQty, clearCart, subtotal, totalItems } = useCart()
-  const [modalOpen, setModalOpen] = useState(false)
+  const { items, removeItem, updateQty, clearCart, subtotal, totalItems, isHydrated } = useCart()
+  const [copyStatus, setCopyStatus] = useState<'idle' | 'copied' | 'manual'>('idle')
+  const message = buildOrderMessage(items, subtotal)
 
-  if (items.length === 0) {
-    return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 min-h-[60vh] flex flex-col items-center justify-center text-center">
-        <div className="w-16 h-16 rounded-full border border-border flex items-center justify-center mb-6">
-          <ShoppingBag size={28} className="text-muted-foreground" />
-        </div>
-        <h1
-          className="text-4xl font-light text-foreground mb-3"
-          style={{ fontFamily: 'var(--font-cormorant), serif' }}
-        >
-          your cart is empty
-        </h1>
-        <p
-          className="text-sm text-muted-foreground mb-8"
-          style={{ fontFamily: 'var(--font-jost)' }}
-        >
-          Looks like you haven&apos;t added anything yet. Time to explore the collection!
-        </p>
-        <Link
-          href="/shop"
-          className="bg-gold text-primary-foreground px-8 py-3.5 rounded-full text-sm font-medium hover:opacity-90 transition-opacity"
-          style={{ fontFamily: 'var(--font-jost)', letterSpacing: '0.08em' }}
-        >
-          Shop Collection
-        </Link>
-      </div>
-    )
+  async function copyOrder() {
+    try {
+      await navigator.clipboard.writeText(message)
+      setCopyStatus('copied')
+    } catch {
+      setCopyStatus('manual')
+    }
   }
 
+  if (!isHydrated) return <div className="section-shell min-h-[60vh] py-24 text-center text-sm text-muted-foreground" role="status">Loading your cart…</div>
+
+  if (!items.length) return (
+    <div className="section-shell py-20 min-h-[65vh] flex flex-col items-center justify-center text-center">
+      <ShoppingBag size={36} strokeWidth={1} className="text-gold mb-6" />
+      <p className="eyebrow mb-4">A little room for something lovely</p>
+      <h1 className="display-heading mb-5">Your next nail <em className="text-gold">crush awaits.</em></h1>
+      <p className="text-sm text-muted-foreground mb-8 max-w-sm leading-relaxed">Your cart is empty. Find a set you love and tap + to keep all your favourites together.</p>
+      <Link href="/shop" className="button-primary">Explore the collection <ArrowRight size={16} /></Link>
+    </div>
+  )
+
   return (
-    <>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Header */}
-        <nav
-          aria-label="Breadcrumb"
-          className="flex items-center gap-2 text-xs text-muted-foreground mb-4"
-          style={{ fontFamily: 'var(--font-jost)' }}
-        >
-          <Link href="/" className="hover:text-foreground transition-colors">Home</Link>
-          <span>/</span>
-          <span className="text-foreground">Cart</span>
-        </nav>
-        <h1
-          className="text-5xl md:text-6xl font-light text-foreground mb-10"
-          style={{ fontFamily: 'var(--font-cormorant), serif' }}
-        >
-          your cart
-        </h1>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-          {/* Cart items */}
-          <div className="lg:col-span-2 space-y-4">
-            {items.map((item) => (
-              <div
-                key={item.product.id}
-                className="flex gap-4 bg-card border border-border rounded-2xl p-4 sm:p-5"
-              >
-                {/* Image */}
-                <Link
-                  href={`/shop/${item.product.id}`}
-                  className="relative w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0 rounded-xl overflow-hidden"
-                >
-                  <Image
-                    src={item.product.image}
-                    alt={item.product.name}
-                    fill
-                    className="object-cover"
-                    sizes="100px"
-                  />
-                </Link>
-
-                {/* Details */}
-                <div className="flex flex-col justify-between flex-1 min-w-0">
-                  <div className="flex items-start justify-between gap-2">
-                    <div>
-                      <Link href={`/shop/${item.product.id}`}>
-                        <h3
-                          className="text-lg font-medium text-foreground hover:text-gold transition-colors leading-tight"
-                          style={{ fontFamily: 'var(--font-cormorant), serif' }}
-                        >
-                          {item.product.name}
-                        </h3>
-                      </Link>
-                      <p
-                        className="text-xs text-muted-foreground mt-0.5"
-                        style={{ fontFamily: 'var(--font-jost)' }}
-                      >
-                        {item.product.tagline}
-                      </p>
-                    </div>
-                    <span
-                      className="text-base font-semibold text-gold flex-shrink-0"
-                      style={{ fontFamily: 'var(--font-jost)' }}
-                    >
-                      {formatPrice(item.product.price * item.quantity)}
-                    </span>
+    <div className="section-shell py-12 md:py-16">
+      <nav aria-label="Breadcrumb" className="flex gap-2 text-xs text-muted-foreground mb-7"><Link href="/" className="hover:text-gold">Home</Link><span>/</span><span>Cart</span></nav>
+      <p className="eyebrow mb-4">Excellent taste, by the way</p>
+      <h1 className="display-heading mb-10">Your little <em className="text-gold">collection.</em></h1>
+      <div className="grid lg:grid-cols-[1.7fr_1fr] gap-10 lg:gap-16">
+        <div>
+          {items.map(({ product, quantity }) => (
+            <div key={product.id} className="flex gap-4 sm:gap-6 border-t border-border py-6">
+              <Link href={`/shop/${product.id}`} className="relative h-24 w-20 sm:h-32 sm:w-28 shrink-0 overflow-hidden">
+                <Image src={product.image} alt={product.name} fill className="object-cover" sizes="112px" />
+              </Link>
+              <div className="min-w-0 flex-1">
+                <div className="flex flex-wrap justify-between gap-2"><Link href={`/shop/${product.id}`}><h2 className="font-serif text-2xl hover:text-gold">{product.name}</h2></Link><span className="text-sm font-medium">{formatPrice(product.price * quantity)}</span></div>
+                <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{product.tagline}</p>
+                <div className="flex items-center justify-between gap-2 mt-4">
+                  <div className="inline-flex items-center border border-border rounded-sm">
+                    <button type="button" onClick={() => { updateQty(product.id, quantity - 1); setCopyStatus('idle') }} className="h-10 w-10 grid place-items-center hover:text-gold" aria-label={`Decrease quantity of ${product.name}`}><Minus size={13} /></button>
+                    <span className="min-w-7 text-center text-xs" aria-label={`Quantity ${quantity}`}>{quantity}</span>
+                    <button type="button" onClick={() => { updateQty(product.id, quantity + 1); setCopyStatus('idle') }} className="h-10 w-10 grid place-items-center hover:text-gold" aria-label={`Increase quantity of ${product.name}`}><Plus size={13} /></button>
                   </div>
-
-                  {/* Qty + remove */}
-                  <div className="flex items-center justify-between mt-3">
-                    <div className="flex items-center gap-1 border border-border rounded-full overflow-hidden">
-                      <button
-                        onClick={() => updateQty(item.product.id, item.quantity - 1)}
-                        className="w-8 h-8 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
-                        aria-label="Decrease quantity"
-                      >
-                        <Minus size={14} />
-                      </button>
-                      <span
-                        className="w-8 text-center text-sm text-foreground"
-                        style={{ fontFamily: 'var(--font-jost)' }}
-                      >
-                        {item.quantity}
-                      </span>
-                      <button
-                        onClick={() => updateQty(item.product.id, item.quantity + 1)}
-                        className="w-8 h-8 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
-                        aria-label="Increase quantity"
-                      >
-                        <Plus size={14} />
-                      </button>
-                    </div>
-                    <button
-                      onClick={() => removeItem(item.product.id)}
-                      className="flex items-center gap-1 text-xs text-muted-foreground hover:text-red-400 transition-colors"
-                      style={{ fontFamily: 'var(--font-jost)' }}
-                      aria-label={`Remove ${item.product.name}`}
-                    >
-                      <Trash2 size={14} />
-                      Remove
-                    </button>
-                  </div>
+                  <button type="button" onClick={() => { removeItem(product.id); setCopyStatus('idle') }} className="inline-flex items-center gap-1.5 text-[11px] text-muted-foreground hover:text-foreground min-h-10" aria-label={`Remove ${product.name}`}><Trash2 size={13} /><span className="hidden sm:inline">Remove</span></button>
                 </div>
               </div>
-            ))}
-          </div>
-
-          {/* Order summary */}
-          <div className="lg:col-span-1">
-            <div className="bg-card border border-border rounded-2xl p-6 sticky top-24">
-              <h2
-                className="text-2xl font-light text-foreground mb-6"
-                style={{ fontFamily: 'var(--font-cormorant), serif' }}
-              >
-                Order summary
-              </h2>
-
-              <div className="space-y-3 mb-6">
-                <div className="flex justify-between text-sm" style={{ fontFamily: 'var(--font-jost)' }}>
-                  <span className="text-muted-foreground">Items ({totalItems})</span>
-                  <span className="text-foreground">{totalItems}</span>
-                </div>
-                <div className="flex justify-between text-sm" style={{ fontFamily: 'var(--font-jost)' }}>
-                  <span className="text-muted-foreground">Subtotal</span>
-                  <span className="text-foreground font-semibold">{formatPrice(subtotal)}</span>
-                </div>
-                <div className="flex justify-between text-sm" style={{ fontFamily: 'var(--font-jost)' }}>
-                  <span className="text-muted-foreground">Shipping</span>
-                  <span className="text-muted-foreground">Calculated in DMs</span>
-                </div>
-              </div>
-
-              <div className="border-t border-border pt-4 mb-6">
-                <div className="flex justify-between" style={{ fontFamily: 'var(--font-jost)' }}>
-                  <span className="text-foreground font-medium">Total</span>
-                  <span className="text-gold font-semibold text-lg">{formatPrice(subtotal)}</span>
-                </div>
-              </div>
-
-              {/* Order on Instagram CTA */}
-              <button
-                onClick={() => setModalOpen(true)}
-                className="w-full flex items-center justify-center gap-2 py-4 rounded-full bg-gradient-to-r from-yellow-500 via-pink-500 to-purple-600 text-white font-semibold text-sm hover:opacity-90 transition-opacity"
-                style={{ fontFamily: 'var(--font-jost)', letterSpacing: '0.05em' }}
-              >
-                <InstagramIcon size={18} />
-                Order on Instagram
-              </button>
-
-              <p
-                className="text-center text-xs text-muted-foreground mt-3"
-                style={{ fontFamily: 'var(--font-jost)' }}
-              >
-                We&apos;ll walk you through sending your order to{' '}
-                <a
-                  href="https://www.instagram.com/_saze.in_/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gold hover:underline"
-                >
-                  @_saze.in_
-                </a>
-                .
-              </p>
-
-              <button
-                onClick={clearCart}
-                className="w-full mt-4 text-xs text-muted-foreground hover:text-foreground transition-colors"
-                style={{ fontFamily: 'var(--font-jost)' }}
-              >
-                Clear cart
-              </button>
             </div>
-          </div>
+          ))}
+          <Link href="/shop" className="inline-flex gap-2 items-center mt-4 text-xs border-b border-gold pb-1">A little more browsing <ArrowRight size={14} /></Link>
         </div>
+        <aside className="bg-card p-6 sm:p-8 self-start lg:sticky lg:top-32 border border-border">
+          <h2 className="font-serif text-3xl mb-6">The lovely little details</h2>
+          <div className="space-y-3 text-xs mb-5"><div className="flex justify-between"><span className="text-muted-foreground">Sets</span><span>{totalItems}</span></div><div className="flex justify-between"><span className="text-muted-foreground">Shipping</span><span>Confirmed in DMs</span></div></div>
+          <div className="border-t border-border pt-4 flex justify-between mb-6"><span className="text-sm">Subtotal</span><span className="text-xl font-medium text-gold">{formatPrice(subtotal)}</span></div>
+          <p className="text-xs text-muted-foreground leading-relaxed mb-5">Copy your order details, then tap Order on Instagram. On @{INSTAGRAM_USERNAME}, tap Message and paste them into your conversation.</p>
+          <button type="button" onClick={copyOrder} className="button-outline w-full mb-3">{copyStatus === 'copied' ? <Check size={16} /> : <Copy size={16} />}{copyStatus === 'copied' ? 'Order details copied' : 'Copy order details'}</button>
+          <InstagramOrderLink className="button-primary w-full" />
+          <p role="status" className="text-[11px] text-muted-foreground mt-3 leading-relaxed">{copyStatus === 'copied' ? 'Copied! Paste your order in an Instagram message.' : copyStatus === 'manual' ? 'Automatic copying is unavailable. Select and copy the message below.' : 'Availability, fit, payment, and delivery are confirmed personally in DMs.'}</p>
+          <details className="mt-5 text-xs" open={copyStatus === 'manual' ? true : undefined}>
+            <summary className="text-muted-foreground hover:text-foreground">View your order message</summary>
+            <textarea readOnly value={message} onFocus={(event) => event.currentTarget.select()} aria-label="Your order message — select to copy" className="mt-3 w-full h-48 resize-y border border-border bg-background p-3 text-xs leading-relaxed" />
+          </details>
+          <button type="button" onClick={clearCart} className="w-full mt-5 text-[11px] min-h-10 text-muted-foreground hover:text-foreground">Clear cart</button>
+        </aside>
       </div>
-
-      <InstagramOrderModal
-        open={modalOpen}
-        onClose={() => setModalOpen(false)}
-        items={items}
-        subtotal={subtotal}
-      />
-    </>
+    </div>
   )
 }

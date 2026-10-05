@@ -1,44 +1,50 @@
+'use client'
+
+import { useState } from 'react'
 import Link from 'next/link'
-import { ArrowRight } from 'lucide-react'
-import { getFeaturedProducts } from '@/lib/products'
+import { ArrowUpRight } from 'lucide-react'
+import { products, type Category } from '@/lib/products'
 import ProductCard from '@/components/product-card'
+import Reveal from '@/components/reveal'
+
+const edits: { value: Category; label: string }[] = [
+  { value: 'all', label: 'The signature edit' },
+  { value: 'everyday', label: 'Everyday muse' },
+  { value: 'bridal', label: 'Bridal glow' },
+  { value: 'festive', label: 'After dark' },
+]
 
 export default function FeaturedSection() {
-  const featured = getFeaturedProducts()
+  const [category, setCategory] = useState<Category>('all')
+  const collection = category === 'all' ? products.filter((product) => product.featured).slice(0, 4)
+    : products.filter((product) => product.category === category)
 
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
-        <div>
-          <p
-            className="text-xs text-gold tracking-[0.2em] uppercase mb-3"
-            style={{ fontFamily: 'var(--font-jost)' }}
-          >
-            ✦ Featured
-          </p>
-          <h2
-            className="text-4xl md:text-5xl font-light leading-none"
-            style={{ fontFamily: 'var(--font-cormorant), serif' }}
-          >
-            the collection
-          </h2>
+    <section id="collection" className="light-section py-20 md:py-28">
+      <div className="section-shell">
+        <Reveal>
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-5 mb-9">
+            <div>
+              <p className="eyebrow mb-4">01 / The collection</p>
+              <h2 className="display-heading">Find your <em className="text-gold">kind of glam.</em></h2>
+              <p className="text-sm text-muted-foreground mt-4">Little works of art. Big personality.</p>
+            </div>
+            <Link href="/shop" className="inline-flex items-center gap-2 self-start sm:self-auto pb-1 border-b border-gold text-xs">Explore all sets <ArrowUpRight size={16} /></Link>
+          </div>
+          <div className="flex flex-wrap gap-2 mb-9" role="group" aria-label="Filter the featured collection">
+            {edits.map(({ value, label }) => (
+              <button type="button" key={value} onClick={() => setCategory(value)} aria-pressed={category === value}
+                className={`min-h-11 rounded-full border px-4 py-2 text-xs transition-colors ${category === value ? 'bg-foreground border-foreground text-background' : 'border-border text-muted-foreground hover:border-foreground hover:text-foreground'}`}>
+                {label}
+              </button>
+            ))}
+          </div>
+        </Reveal>
+        <div aria-live="polite" aria-atomic="true" className="sr-only">{collection.length} sets in {edits.find((edit) => edit.value === category)?.label}</div>
+        <div key={category} className="collection-grid grid grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-9 md:gap-x-7">
+          {collection.map((product) => <ProductCard key={product.id} product={product} />)}
         </div>
-        <Link
-          href="/shop"
-          className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-gold transition-colors"
-          style={{ fontFamily: 'var(--font-jost)', letterSpacing: '0.08em' }}
-        >
-          View all
-          <ArrowRight size={14} />
-        </Link>
-      </div>
-
-      {/* Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-        {featured.slice(0, 4).map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
+        <p className="text-center text-xs text-muted-foreground mt-10">Found the one? Tap Order on Instagram and let&apos;s make it yours.</p>
       </div>
     </section>
   )

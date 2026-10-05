@@ -5,6 +5,7 @@ import InstagramIcon from '@/components/icons/instagram-icon'
 import Navbar from '@/components/navbar'
 import Footer from '@/components/footer'
 import type { Metadata } from 'next'
+import { INSTAGRAM_URL, INSTAGRAM_USERNAME } from '@/lib/instagram'
 
 export const metadata: Metadata = {
   title: 'About | SAZÉ',
@@ -39,7 +40,7 @@ export default function AboutPage() {
   return (
     <>
       <Navbar />
-      <main className="pt-20">
+      <main id="main-content" className="pt-28">
         {/* Hero */}
         <section className="relative overflow-hidden">
           <div className="absolute inset-0 z-0">
@@ -126,14 +127,14 @@ export default function AboutPage() {
               </div>
 
               <a
-                href="https://www.instagram.com/_saze.in_/"
+                href={INSTAGRAM_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 mt-8 border border-border text-sm text-muted-foreground hover:text-foreground hover:border-gold transition-colors px-5 py-2.5 rounded-full"
                 style={{ fontFamily: 'var(--font-jost)' }}
               >
                 <InstagramIcon size={16} />
-                Follow @_saze.in_
+                Follow @{INSTAGRAM_USERNAME}
               </a>
             </div>
 
@@ -148,18 +149,18 @@ export default function AboutPage() {
                 />
               </div>
               {/* Floating stat card */}
-              <div className="absolute -bottom-6 -left-6 bg-card border border-border rounded-2xl px-5 py-4 shadow-2xl">
+              <div className="absolute -bottom-6 left-0 sm:-left-6 bg-card border border-border rounded-2xl px-5 py-4 shadow-2xl">
                 <p
                   className="text-3xl font-semibold text-gold"
                   style={{ fontFamily: 'var(--font-cormorant), serif' }}
                 >
-                  500+
+                  Goa-made
                 </p>
                 <p
                   className="text-xs text-muted-foreground uppercase tracking-widest mt-1"
                   style={{ fontFamily: 'var(--font-jost)' }}
                 >
-                  Happy customers
+                  With love, in every detail
                 </p>
               </div>
             </div>

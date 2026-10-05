@@ -10,7 +10,7 @@ export default function CartPage() {
   return (
     <>
       <Navbar />
-      <main className="pt-20">
+      <main id="main-content" className="pt-28 light-section pb-12">
         <CartClient />
       </main>
       <Footer />

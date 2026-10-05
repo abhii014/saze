@@ -7,6 +7,8 @@ import { useCart } from '@/lib/cart-context'
 import type { Product } from '@/lib/products'
 import { formatPrice } from '@/lib/products'
 import { useState } from 'react'
+import InstagramOrderLink from '@/components/instagram-order-link'
+import { INSTAGRAM_USERNAME } from '@/lib/instagram'
 
 const badgeStyles: Record<string, string> = {
   bestseller: 'bg-gold text-primary-foreground',
@@ -129,7 +131,10 @@ export default function ProductDetailClient({ product }: { product: Product }) {
             </ul>
           </div>
 
-          {/* Add to Cart */}
+          {product.available && (
+            <InstagramOrderLink className="button-primary w-full mb-3" label={`Order ${product.name} on Instagram`} />
+          )}
+          {/* Save multiple sets together before ordering. */}
           <button
             onClick={handleAdd}
             disabled={!product.available}
@@ -137,7 +142,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
               added
                 ? 'bg-emerald-600 text-white'
                 : product.available
-                ? 'bg-gold text-primary-foreground hover:opacity-90'
+                ? 'border border-border text-foreground hover:border-gold'
                 : 'bg-muted text-muted-foreground cursor-not-allowed'
             }`}
             style={{ fontFamily: 'var(--font-jost)', letterSpacing: '0.1em' }}
@@ -154,6 +159,10 @@ export default function ProductDetailClient({ product }: { product: Product }) {
               </>
             )}
           </button>
+
+          <p className="text-center text-xs leading-relaxed text-muted-foreground mt-4">
+            Ordering takes you to @{INSTAGRAM_USERNAME}. Message us with this design to confirm sizing and availability.
+          </p>
 
           {added && (
             <div className="mt-4 text-center">
