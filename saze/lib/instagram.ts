@@ -7,13 +7,13 @@ export const INSTAGRAM_URL = `https://www.instagram.com/${INSTAGRAM_USERNAME}/`
 
 export function buildOrderMessage(items: CartItem[], subtotal: number): string {
   return [
-    "Hi SAZÉ! I'd love to order:",
+    "Hi SAZÉ! I'd love to place this order:",
     '',
     ...items.map(({ product, quantity }) =>
       `• ${product.name} × ${quantity}: ${formatPrice(product.price * quantity)}`
     ),
     '',
-    `Subtotal: ${formatPrice(subtotal)} (before shipping)`,
+    `Order value: ${formatPrice(subtotal)} (before shipping)`,
     '',
     'Please confirm availability, sizing, shipping, and payment details. Thank you!',
   ].join('\n')

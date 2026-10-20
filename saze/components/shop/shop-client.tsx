@@ -53,7 +53,7 @@ export default function ShopClient() {
         <div className="relative sm:w-80">
           <Search size={16} className="absolute left-3 top-3.5 text-muted-foreground" aria-hidden="true" />
           <label htmlFor="collection-search" className="sr-only">Search the collection</label>
-          <input id="collection-search" type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Find your nail crush…" className="w-full bg-transparent border border-border rounded-sm pl-10 pr-4 py-3 text-xs" />
+           <input id="collection-search" type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Find your next crush…" className="w-full bg-transparent border border-border rounded-sm pl-10 pr-4 py-3 text-xs" />
         </div>
         <div className="flex items-center gap-3"><label htmlFor="sort-select" className="text-xs text-muted-foreground">Sort by</label><select id="sort-select" value={sort} onChange={(event) => setSort(event.target.value)} className="border border-border bg-background rounded-sm px-3 py-3 text-xs">
           {sortOptions.map(({ value, label }) => <option key={value} value={value}>{label}</option>)}

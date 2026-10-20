@@ -26,7 +26,7 @@ export default function ProductCard({ product }: { product: Product }) {
     <article className="group flex flex-col min-w-0">
       <div className="relative">
         <Link href={`/shop/${product.id}`} className="product-photo relative block overflow-hidden aspect-[4/5] bg-card" aria-label={`View ${product.name}`}>
-          <Image src={product.image} alt={product.name} fill className="object-cover transition-transform duration-700 group-hover:scale-105"
+           <Image src={product.image} alt={product.name} fill className="object-cover transition-transform duration-700 motion-safe:group-hover:scale-105"
             sizes="(max-width: 767px) 45vw, (max-width: 1024px) 45vw, 300px" />
         </Link>
         {product.badge && <span className="pointer-events-none absolute top-3 left-3 bg-background/95 px-2.5 py-1.5 text-[8px] sm:text-[9px] tracking-[0.1em] uppercase text-foreground">{product.badge}</span>}

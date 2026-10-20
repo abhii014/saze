@@ -6,7 +6,7 @@ import Link from 'next/link'
 
 export const metadata = {
   title: 'Shop | SAZÉ',
-  description: 'Browse the full SAZÉ press-on nail collection. Everyday, bridal, festive, and custom designs.',
+  description: 'Browse the full SAZÉ collection of press-on nails and new gold-tone necklaces. Everyday, bridal, festive, and custom designs.',
 }
 
 export default function ShopPage() {
@@ -33,7 +33,7 @@ export default function ShopPage() {
               className="text-muted-foreground mt-2 text-sm leading-relaxed"
               style={{ fontFamily: 'var(--font-jost)' }}
             >
-              Every set is made to order. Pick your favourite and DM us on Instagram to place your order.
+              Every detail is made to order. Explore press-on nails and new necklaces, then DM us on Instagram to place your order.
             </p>
           </div>
 

@@ -6,10 +6,10 @@ import Reveal from '@/components/reveal'
 import { INSTAGRAM_URL, INSTAGRAM_USERNAME } from '@/lib/instagram'
 
 const moods = [
-  { image: '/images/hero-nails.png', title: 'All that glitters', href: '/custom-order' },
-  { image: '/images/products/coral-bloom.png', title: 'Soft girl season', href: '/shop/coral-bloom' },
-  { image: '/images/products/velvet-noir.png', title: 'After-dark energy', href: '/shop/velvet-noir' },
-  { image: '/images/products/blush-french.png', title: 'Your everyday muse', href: '/shop/blush-french' },
+  { image: '/images/products/IMG-20261012-WA0069.jpg', title: 'Soft girl season', href: '/shop/butterfly-gold' },
+  { image: '/images/products/IMG-20261012-WA0070.jpg', title: 'After-dark energy', href: '/shop/onyx-glimmer' },
+  { image: '/images/products/IMG-20261012-WA0078.jpg', title: 'A little butterfly moment', href: '/shop/butterfly-cascade' },
+  { image: '/images/products/IMG-20261012-WA0050.jpg', title: 'Golden details, always', href: '/shop/aurora-gem-pendant' },
 ]
 
 export default function SocialSection() {
@@ -23,7 +23,7 @@ export default function SocialSection() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5">
           {moods.map(({ image, title, href }, index) => (
             <Link key={title} href={href} className={`group block ${index % 2 === 1 ? 'md:mt-8' : ''}`}>
-              <div className="relative aspect-square overflow-hidden"><Image src={image} alt={title} fill className="object-cover transition-transform duration-700 group-hover:scale-105" sizes="(max-width: 767px) 45vw, 25vw" />
+              <div className="relative aspect-square overflow-hidden"><Image src={image} alt={title} fill className="object-cover transition-transform duration-700 motion-safe:group-hover:scale-105" sizes="(max-width: 767px) 45vw, 25vw" />
                 <span className="absolute right-3 bottom-3 grid h-8 w-8 place-items-center rounded-full bg-background/90"><ArrowUpRight size={16} /></span>
               </div>
               <p className="font-serif italic text-xl mt-3">{title}</p>

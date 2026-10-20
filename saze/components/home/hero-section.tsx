@@ -24,8 +24,12 @@ export default function HeroSection() {
             </div>
             <div className="mt-9 flex items-center gap-4 border-t border-cream/10 pt-5">
               <div className="flex -space-x-3" aria-hidden="true">
-                {['blush-french', 'golden-hour', 'midnight-rose'].map((name) => (
-                  <Image key={name} src={`/images/products/${name}.png`} alt="" width={38} height={38} className="h-10 w-10 rounded-full border-2 border-background object-cover" />
+                {[
+                  ['/images/products/IMG-20261012-WA0062.jpg', 'Champagne Bow'],
+                  ['/images/products/IMG-20261012-WA0070.jpg', 'Onyx Glimmer'],
+                  ['/images/products/IMG-20261012-WA0078.jpg', 'Butterfly Cascade'],
+                ].map(([src, alt]) => (
+                  <Image key={src} src={src} alt={alt} width={38} height={38} className="h-10 w-10 rounded-full border-2 border-background object-cover" />
                 ))}
               </div>
               <p className="text-[11px] leading-relaxed text-muted-foreground">Your mood. Your moment.<br /><span className="text-foreground">A set for every version of you.</span></p>

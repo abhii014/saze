@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://saze-nails.vercel.app'),
   title: 'SAZÉ | Luxury Press-On Nails',
   description:
-    'SAZÉ — Because Details Matter. Affordable luxury press-on nails, handcrafted with precision. Pan-India shipping. DM to order.',
+    'SAZÉ — Because Details Matter. Affordable luxury press-on nails and finishing pieces, handcrafted with precision. Pan-India shipping. DM to order.',
   keywords: ['press on nails', 'luxury nails', 'nail art', 'SAZÉ', 'saze.in', 'Goa'],
   openGraph: {
     title: 'SAZÉ | Luxury Press-On Nails',
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     siteName: 'SAZÉ',
     images: [{ url: '/images/hero-nails.png', width: 1024, height: 1024, alt: 'SAZÉ handcrafted gold and floral nail art' }],
   },
-  twitter: { card: 'summary_large_image', title: 'SAZÉ | Luxury Press-On Nails', description: 'A little glam. A lot of you. Handcrafted in Goa, shipped across India.', images: ['/images/hero-nails.png'] },
+  twitter: { card: 'summary_large_image', title: 'SAZÉ | Luxury Press-On Nails & Details', description: 'A little glam. A lot of you. Handcrafted in Goa, shipped across India.', images: ['/images/hero-nails.png'] },
   icons: { icon: '/images/saze-logo.png', apple: '/images/saze-logo.png' },
 }
 

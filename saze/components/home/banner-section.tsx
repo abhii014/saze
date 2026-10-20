@@ -18,7 +18,7 @@ export default function BannerSection() {
           </div>
         </Reveal>
         <div className="relative min-w-0 w-full aspect-square md:aspect-auto md:h-full md:min-h-[320px] mb-10 md:mb-0 overflow-hidden">
-          <Image src="/images/products/midnight-rose.png" alt="Burgundy nails with intricate gold rose details and crystal embellishments" fill className="object-cover"
+           <Image src="/images/products/IMG-20261012-WA0081.jpg" alt="Rose pink press-on nails with ruby and gold floral details" fill className="object-cover"
             sizes="(max-width: 767px) 90vw, 50vw" />
           <div className="absolute bottom-5 left-5 bg-background/90 backdrop-blur-sm px-5 py-3 border border-gold/30"><p className="font-serif text-2xl italic text-gold">One of a kind. Just like you.</p></div>
         </div>

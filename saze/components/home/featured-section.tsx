@@ -12,6 +12,7 @@ const edits: { value: Category; label: string }[] = [
   { value: 'everyday', label: 'Everyday muse' },
   { value: 'bridal', label: 'Bridal glow' },
   { value: 'festive', label: 'After dark' },
+  { value: 'necklaces', label: 'Necklaces' },
 ]
 
 export default function FeaturedSection() {

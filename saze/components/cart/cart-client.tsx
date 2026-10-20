@@ -5,13 +5,14 @@ import Link from 'next/link'
 import { Minus, Plus, Trash2, ShoppingBag, Copy, Check, ArrowRight } from 'lucide-react'
 import { useCart } from '@/lib/cart-context'
 import { formatPrice } from '@/lib/products'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import InstagramOrderLink from '@/components/instagram-order-link'
 import { buildOrderMessage, INSTAGRAM_USERNAME } from '@/lib/instagram'
 
 export default function CartClient() {
   const { items, removeItem, updateQty, clearCart, subtotal, totalItems, isHydrated } = useCart()
   const [copyStatus, setCopyStatus] = useState<'idle' | 'copied' | 'manual'>('idle')
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
   const message = buildOrderMessage(items, subtotal)
 
   async function copyOrder() {
@@ -20,6 +21,7 @@ export default function CartClient() {
       setCopyStatus('copied')
     } catch {
       setCopyStatus('manual')
+      requestAnimationFrame(() => textareaRef.current?.select())
     }
   }
 
@@ -67,13 +69,13 @@ export default function CartClient() {
           <h2 className="font-serif text-3xl mb-6">The lovely little details</h2>
           <div className="space-y-3 text-xs mb-5"><div className="flex justify-between"><span className="text-muted-foreground">Sets</span><span>{totalItems}</span></div><div className="flex justify-between"><span className="text-muted-foreground">Shipping</span><span>Confirmed in DMs</span></div></div>
           <div className="border-t border-border pt-4 flex justify-between mb-6"><span className="text-sm">Subtotal</span><span className="text-xl font-medium text-gold">{formatPrice(subtotal)}</span></div>
-          <p className="text-xs text-muted-foreground leading-relaxed mb-5">Copy your order details, then tap Order on Instagram. On @{INSTAGRAM_USERNAME}, tap Message and paste them into your conversation.</p>
-          <button type="button" onClick={copyOrder} className="button-outline w-full mb-3">{copyStatus === 'copied' ? <Check size={16} /> : <Copy size={16} />}{copyStatus === 'copied' ? 'Order details copied' : 'Copy order details'}</button>
-          <InstagramOrderLink className="button-primary w-full" />
-          <p role="status" className="text-[11px] text-muted-foreground mt-3 leading-relaxed">{copyStatus === 'copied' ? 'Copied! Paste your order in an Instagram message.' : copyStatus === 'manual' ? 'Automatic copying is unavailable. Select and copy the message below.' : 'Availability, fit, payment, and delivery are confirmed personally in DMs.'}</p>
+          <p className="text-xs text-muted-foreground leading-relaxed mb-5">Copy the ready-to-send order message, then open Instagram. On @{INSTAGRAM_USERNAME}, tap Message and paste it into your conversation.</p>
+          <button type="button" onClick={copyOrder} className="button-outline w-full mb-3">{copyStatus === 'copied' ? <Check size={16} /> : <Copy size={16} />}{copyStatus === 'copied' ? 'Message copied' : 'Copy order message'}</button>
+          <InstagramOrderLink className="button-primary w-full" target="_blank" rel="noopener noreferrer" label="Open Instagram to send your order message">Open Instagram to order</InstagramOrderLink>
+          <p role="status" className="text-[11px] text-muted-foreground mt-3 leading-relaxed">{copyStatus === 'copied' ? 'Copied! Your cart stays here while you paste the message in Instagram.' : copyStatus === 'manual' ? 'Automatic copying is unavailable. The order message is selected below — copy it, then open Instagram.' : 'Availability, fit, payment, and delivery are confirmed personally in DMs.'}</p>
           <details className="mt-5 text-xs" open={copyStatus === 'manual' ? true : undefined}>
             <summary className="text-muted-foreground hover:text-foreground">View your order message</summary>
-            <textarea readOnly value={message} onFocus={(event) => event.currentTarget.select()} aria-label="Your order message — select to copy" className="mt-3 w-full h-48 resize-y border border-border bg-background p-3 text-xs leading-relaxed" />
+            <textarea ref={textareaRef} readOnly value={message} onFocus={(event) => event.currentTarget.select()} aria-label="Your order message — select to copy" className="mt-3 w-full h-48 resize-y border border-border bg-background p-3 text-xs leading-relaxed" />
           </details>
           <button type="button" onClick={clearCart} className="w-full mt-5 text-[11px] min-h-10 text-muted-foreground hover:text-foreground">Clear cart</button>
         </aside>

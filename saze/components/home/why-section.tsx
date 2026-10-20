@@ -15,11 +15,11 @@ export default function WhySection() {
       <Reveal className="section-shell grid gap-14 md:grid-cols-2 md:gap-20 items-center">
         <div className="relative pb-8 pr-8 md:pr-12">
           <div className="relative aspect-[4/5] overflow-hidden rounded-t-[160px]">
-            <Image src="/images/products/blush-french.png" alt="Blush French press-on nails with pearl accents, styled on soft linen" fill className="object-cover"
+             <Image src="/images/products/IMG-20261012-WA0068.jpg" alt="Nude press-on nails with radiant gold sunburst details" fill className="object-cover"
               sizes="(max-width: 767px) 85vw, 45vw" />
           </div>
           <div className="absolute bottom-0 right-0 w-[46%] bg-background p-2 border border-gold/30 rotate-[5deg]">
-            <div className="relative aspect-square"><Image src="/images/products/golden-hour.png" alt="Champagne gold chrome nail set" fill className="object-cover" sizes="(max-width: 767px) 40vw, 240px" /></div>
+             <div className="relative aspect-square"><Image src="/images/products/IMG-20261012-WA0077.jpg" alt="Black clover necklace set with gold details" fill className="object-cover" sizes="(max-width: 767px) 40vw, 240px" /></div>
             <p className="py-2 text-center font-serif italic text-lg text-gold">It&apos;s all in the details.</p>
           </div>
         </div>

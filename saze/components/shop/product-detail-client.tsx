@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { ShoppingBag, Check, Package, Sparkles } from 'lucide-react'
 import { useCart } from '@/lib/cart-context'
 import type { Product } from '@/lib/products'
-import { formatPrice } from '@/lib/products'
+import { formatPrice, getCategoryLabel } from '@/lib/products'
 import { useState } from 'react'
 import InstagramOrderLink from '@/components/instagram-order-link'
 import { INSTAGRAM_USERNAME } from '@/lib/instagram'
@@ -68,7 +68,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
             className="text-xs text-gold uppercase tracking-[0.2em] mb-2"
             style={{ fontFamily: 'var(--font-jost)' }}
           >
-            ✦ {product.category}
+            ✦ {getCategoryLabel(product.category)}
           </p>
           <h1
             className="text-4xl md:text-5xl font-light text-foreground mb-2 leading-tight"
