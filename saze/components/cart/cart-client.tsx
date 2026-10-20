@@ -7,7 +7,8 @@ import { useCart } from '@/lib/cart-context'
 import { formatPrice } from '@/lib/products'
 import { useRef, useState } from 'react'
 import InstagramOrderLink from '@/components/instagram-order-link'
-import { buildOrderMessage, INSTAGRAM_USERNAME } from '@/lib/instagram'
+import InstagramIcon from '@/components/icons/instagram-icon'
+import { buildOrderMessage, INSTAGRAM_URL, INSTAGRAM_USERNAME } from '@/lib/instagram'
 
 export default function CartClient() {
   const { items, removeItem, updateQty, clearCart, subtotal, totalItems, isHydrated } = useCart()
@@ -22,6 +23,22 @@ export default function CartClient() {
     } catch {
       setCopyStatus('manual')
       requestAnimationFrame(() => textareaRef.current?.select())
+    }
+  }
+
+  async function copyAndOpenInstagram() {
+    const instagramWindow = window.open(INSTAGRAM_URL, '_blank', 'noopener,noreferrer')
+
+    try {
+      await navigator.clipboard.writeText(message)
+      setCopyStatus('copied')
+    } catch {
+      setCopyStatus('manual')
+      requestAnimationFrame(() => textareaRef.current?.select())
+    }
+
+    if (!instagramWindow) {
+      setCopyStatus('manual')
     }
   }
 
@@ -71,8 +88,13 @@ export default function CartClient() {
           <div className="border-t border-border pt-4 flex justify-between mb-6"><span className="text-sm">Subtotal</span><span className="text-xl font-medium text-gold">{formatPrice(subtotal)}</span></div>
           <p className="text-xs text-muted-foreground leading-relaxed mb-5">Copy the ready-to-send order message, then open Instagram. On @{INSTAGRAM_USERNAME}, tap Message and paste it into your conversation.</p>
           <button type="button" onClick={copyOrder} className="button-outline w-full mb-3">{copyStatus === 'copied' ? <Check size={16} /> : <Copy size={16} />}{copyStatus === 'copied' ? 'Message copied' : 'Copy order message'}</button>
-          <InstagramOrderLink className="button-primary w-full" target="_blank" rel="noopener noreferrer" label="Open Instagram to send your order message">Open Instagram to order</InstagramOrderLink>
-          <p role="status" className="text-[11px] text-muted-foreground mt-3 leading-relaxed">{copyStatus === 'copied' ? 'Copied! Your cart stays here while you paste the message in Instagram.' : copyStatus === 'manual' ? 'Automatic copying is unavailable. The order message is selected below — copy it, then open Instagram.' : 'Availability, fit, payment, and delivery are confirmed personally in DMs.'}</p>
+          <button type="button" onClick={copyAndOpenInstagram} className="button-primary w-full mb-3" aria-label="Copy your order message and open Instagram">
+            <InstagramIcon size={17} aria-hidden="true" />
+            Copy & open Instagram
+            <ArrowRight size={16} />
+          </button>
+          <InstagramOrderLink className="button-outline w-full" target="_blank" rel="noopener noreferrer" label="Open Instagram to send your order message">Open Instagram only</InstagramOrderLink>
+          <p role="status" className="text-[11px] text-muted-foreground mt-3 leading-relaxed">{copyStatus === 'copied' ? 'Copied! Instagram is open — tap Message, then paste and send.' : copyStatus === 'manual' ? 'Automatic copying is unavailable. The order message is selected below — copy it, then open Instagram.' : 'One tap copies your message and opens Instagram. Tap Message, paste, and send.'}</p>
           <details className="mt-5 text-xs" open={copyStatus === 'manual' ? true : undefined}>
             <summary className="text-muted-foreground hover:text-foreground">View your order message</summary>
             <textarea ref={textareaRef} readOnly value={message} onFocus={(event) => event.currentTarget.select()} aria-label="Your order message — select to copy" className="mt-3 w-full h-48 resize-y border border-border bg-background p-3 text-xs leading-relaxed" />
