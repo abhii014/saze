@@ -1,0 +1,488 @@
+[
+  {
+    "id": "aurora-gem-pendant",
+    "name": "Aurora Gem Pendant",
+    "tagline": "A tiny constellation in warm gold",
+    "price": 399,
+    "originalPrice": 599,
+    "category": "necklaces",
+    "image": "/images/products/IMG-20261012-WA0050.jpg",
+    "badge": "new",
+    "description": "A delicate gold-tone chain finished with a small multicolour crystal pendant for an effortless glow from day to dusk.",
+    "includes": [
+      "Gold-tone necklace",
+      "Gift pouch",
+      "Care card"
+    ],
+    "available": true,
+    "featured": true
+  },
+  {
+    "id": "midnight-clover-chain",
+    "name": "Midnight Clover Chain",
+    "tagline": "Black enamel and polished gold",
+    "price": 399,
+    "originalPrice": 609,
+    "category": "necklaces",
+    "image": "/images/products/IMG-20261012-WA0057.jpg",
+    "badge": "new",
+    "description": "A statement-making clover chain with glossy black accents and a softly gleaming gold finish.",
+    "includes": [
+      "Gold-tone necklace",
+      "Gift pouch",
+      "Care card"
+    ],
+    "available": true,
+    "featured": true
+  },
+  {
+    "id": "clover-garden-set",
+    "name": "Clover Garden Set",
+    "tagline": "A coordinated clover moment",
+    "price": 399,
+    "originalPrice": 619,
+    "category": "necklaces",
+    "image": "/images/products/IMG-20261012-WA0058.jpg",
+    "badge": "new",
+    "description": "A considered clover-inspired necklace edit designed to bring a little collected charm to everyday dressing.",
+    "includes": [
+      "Gold-tone necklace",
+      "Gift pouch",
+      "Care card"
+    ],
+    "available": true,
+    "featured": false
+  },
+  {
+    "id": "pearl-heart-lariat",
+    "name": "Pearl Heart Lariat",
+    "tagline": "A soft heart, a luminous finish",
+    "price": 399,
+    "originalPrice": 629,
+    "category": "necklaces",
+    "image": "/images/products/IMG-20261012-WA0060.jpg",
+    "badge": "new",
+    "description": "A romantic longline necklace pairing a petite heart detail with a luminous pearl-inspired accent.",
+    "includes": [
+      "Gold-tone necklace",
+      "Gift pouch",
+      "Care card"
+    ],
+    "available": true,
+    "featured": true
+  },
+  {
+    "id": "celestial-wings-lariat",
+    "name": "Celestial Wings Lariat",
+    "tagline": "Fine wings with a little sparkle",
+    "price": 399,
+    "originalPrice": 639,
+    "category": "necklaces",
+    "image": "/images/products/IMG-20261012-WA0061.jpg",
+    "badge": "new",
+    "description": "A graceful layered lariat with winged detailing and a petite heart drop that catches the light as you move.",
+    "includes": [
+      "Gold-tone necklace",
+      "Gift pouch",
+      "Care card"
+    ],
+    "available": true,
+    "featured": false
+  },
+  {
+    "id": "golden-butterfly-pair",
+    "name": "Golden Butterfly Pair",
+    "tagline": "Light-catching layers for every day",
+    "price": 399,
+    "originalPrice": 649,
+    "category": "necklaces",
+    "image": "/images/products/IMG-20261012-WA0065.jpg",
+    "badge": "new",
+    "description": "A delicate layered necklace duo with butterfly and heart motifs for a soft, feminine finish.",
+    "includes": [
+      "Gold-tone necklace",
+      "Gift pouch",
+      "Care card"
+    ],
+    "available": true,
+    "featured": false
+  },
+  {
+    "id": "winged-heart-lariat",
+    "name": "Winged Heart Lariat",
+    "tagline": "A little romance, beautifully framed",
+    "price": 399,
+    "originalPrice": 659,
+    "category": "necklaces",
+    "image": "/images/products/IMG-20261012-WA0075.jpg",
+    "badge": "new",
+    "description": "A fine gold-tone lariat with a winged heart centrepiece and a sweet drop detail made for special little moments.",
+    "includes": [
+      "Gold-tone necklace",
+      "Gift pouch",
+      "Care card"
+    ],
+    "available": true,
+    "featured": true
+  },
+  {
+    "id": "noir-clover-set",
+    "name": "Noir Clover Set",
+    "tagline": "Iconic black clovers in gold",
+    "price": 399,
+    "originalPrice": 609,
+    "category": "necklaces",
+    "image": "/images/products/IMG-20261012-WA0077.jpg",
+    "badge": "new",
+    "description": "A polished clover-inspired set with black enamel details, made for quiet drama and an easy after-dark mood.",
+    "includes": [
+      "Gold-tone necklace",
+      "Gift pouch",
+      "Care card"
+    ],
+    "available": true,
+    "featured": false
+  },
+  {
+    "id": "butterfly-cascade",
+    "name": "Butterfly Cascade",
+    "tagline": "A graceful flight of golden details",
+    "price": 399,
+    "originalPrice": 619,
+    "category": "necklaces",
+    "image": "/images/products/IMG-20261012-WA0078.jpg",
+    "badge": "new",
+    "description": "A softly layered gold-tone necklace with fluttering butterfly details that feels delicate, playful, and polished.",
+    "includes": [
+      "Gold-tone necklace",
+      "Gift pouch",
+      "Care card"
+    ],
+    "available": true,
+    "featured": true
+  },
+  {
+    "id": "golden-clover-duet",
+    "name": "Golden Clover Duet",
+    "tagline": "Two charms, one effortless glow",
+    "price": 399,
+    "originalPrice": 629,
+    "category": "necklaces",
+    "image": "/images/products/IMG-20261012-WA0048.jpg",
+    "badge": "new",
+    "description": "A delicate gold-tone duet with clover-inspired charms that layers beautifully over your favourite neckline.",
+    "includes": [
+      "Gold-tone necklace",
+      "Gift pouch",
+      "Care card"
+    ],
+    "available": true,
+    "featured": false
+  },
+  {
+    "id": "champagne-diagonal",
+    "name": "Champagne Diagonal",
+    "tagline": "Sheer nude with a fine gold sweep",
+    "price": 399,
+    "originalPrice": 599,
+    "category": "everyday",
+    "image": "/images/products/IMG-20261012-WA0054.jpg",
+    "description": "A softly polished nude set finished with delicate diagonal gold lines for a refined everyday manicure.",
+    "includes": [
+      "24 press-on nails (12 sizes)",
+      "Nail glue",
+      "Prep pad",
+      "Mini nail file"
+    ],
+    "available": true,
+    "featured": true
+  },
+  {
+    "id": "ruby-heart-glaze",
+    "name": "Ruby Heart Glaze",
+    "tagline": "Warm nude with tiny ruby-red hearts",
+    "price": 399,
+    "originalPrice": 609,
+    "category": "festive",
+    "image": "/images/products/IMG-20261012-WA0059.jpg",
+    "description": "A glossy nude canvas touched with tiny red hearts and fine gold accents for a playful, romantic finish.",
+    "includes": [
+      "24 press-on nails (12 sizes)",
+      "Nail glue",
+      "Prep pad",
+      "Mini nail file"
+    ],
+    "available": true,
+    "featured": true
+  },
+  {
+    "id": "champagne-bow",
+    "name": "Champagne Bow",
+    "tagline": "Soft blush with fine gold ribbon art",
+    "price": 399,
+    "originalPrice": 619,
+    "category": "bridal",
+    "image": "/images/products/IMG-20261012-WA0062.jpg",
+    "description": "A glossy blush set with delicate bow motifs and fine gold detailing, made for ceremonies and soft celebrations.",
+    "includes": [
+      "24 press-on nails (12 sizes)",
+      "Nail glue",
+      "Prep pad",
+      "Mini nail file"
+    ],
+    "available": true,
+    "featured": true
+  },
+  {
+    "id": "lilac-silver-wave",
+    "name": "Lilac Silver Wave",
+    "tagline": "Muted mauve with sculpted chrome lines",
+    "price": 399,
+    "originalPrice": 629,
+    "category": "everyday",
+    "image": "/images/products/IMG-20261012-WA0064.jpg",
+    "description": "A modern mauve set traced with fluid silver waves for a cool, editorial take on everyday polish.",
+    "includes": [
+      "24 press-on nails (12 sizes)",
+      "Nail glue",
+      "Prep pad",
+      "Mini nail file"
+    ],
+    "available": true,
+    "featured": false
+  },
+  {
+    "id": "lavender-chrome-bloom",
+    "name": "Lavender Chrome Bloom",
+    "tagline": "Glossy lavender with a futuristic sheen",
+    "price": 399,
+    "originalPrice": 639,
+    "category": "festive",
+    "image": "/images/products/IMG-20261012-WA0066.jpg",
+    "description": "A luminous lavender set with a reflective finish that shifts softly in the light and turns every gesture into a moment.",
+    "includes": [
+      "24 press-on nails (12 sizes)",
+      "Nail glue",
+      "Prep pad",
+      "Mini nail file"
+    ],
+    "available": true,
+    "featured": false
+  },
+  {
+    "id": "garnet-gilded-french",
+    "name": "Garnet Gilded French",
+    "tagline": "Rich red tips with a fine gold edge",
+    "price": 399,
+    "originalPrice": 649,
+    "category": "festive",
+    "image": "/images/products/IMG-20261012-WA0067.jpg",
+    "description": "A confident take on the French tip with deep garnet colour, high shine, and a precise gold accent line.",
+    "includes": [
+      "24 press-on nails (12 sizes)",
+      "Nail glue",
+      "Prep pad",
+      "Mini nail file"
+    ],
+    "available": true,
+    "featured": true
+  },
+  {
+    "id": "solar-flare",
+    "name": "Solar Flare",
+    "tagline": "Nude gloss with sunburst goldwork",
+    "price": 399,
+    "originalPrice": 659,
+    "category": "bridal",
+    "image": "/images/products/IMG-20261012-WA0068.jpg",
+    "description": "A translucent nude set with radiant gold sunbursts that brings a warm, celebratory glow to your fingertips.",
+    "includes": [
+      "24 press-on nails (12 sizes)",
+      "Nail glue",
+      "Prep pad",
+      "Mini nail file"
+    ],
+    "available": true,
+    "featured": false
+  },
+  {
+    "id": "butterfly-gold",
+    "name": "Butterfly Gold",
+    "tagline": "Blush nude with delicate golden wings",
+    "price": 399,
+    "originalPrice": 599,
+    "category": "bridal",
+    "image": "/images/products/IMG-20261012-WA0069.jpg",
+    "description": "A romantic nude set scattered with fine butterfly artwork and glints of gold for an airy, feminine finish.",
+    "includes": [
+      "24 press-on nails (12 sizes)",
+      "Nail glue",
+      "Prep pad",
+      "Mini nail file"
+    ],
+    "available": true,
+    "featured": true
+  },
+  {
+    "id": "onyx-glimmer",
+    "name": "Onyx Glimmer",
+    "tagline": "Black lacquer with a subtle stardust finish",
+    "price": 399,
+    "originalPrice": 609,
+    "category": "festive",
+    "image": "/images/products/IMG-20261012-WA0070.jpg",
+    "description": "A sleek black set with a micro-shimmer finish for evenings when your nails deserve the spotlight.",
+    "includes": [
+      "24 press-on nails (12 sizes)",
+      "Nail glue",
+      "Prep pad",
+      "Mini nail file"
+    ],
+    "available": true,
+    "featured": true
+  },
+  {
+    "id": "rosewood-crossing",
+    "name": "Rosewood Crossing",
+    "tagline": "Sheer blush crossed with cinnamon tips",
+    "price": 399,
+    "originalPrice": 619,
+    "category": "everyday",
+    "image": "/images/products/IMG-20261012-WA0071.jpg",
+    "description": "A wearable blush set with warm rosewood diagonal details that feels considered without trying too hard.",
+    "includes": [
+      "24 press-on nails (12 sizes)",
+      "Nail glue",
+      "Prep pad",
+      "Mini nail file"
+    ],
+    "available": true,
+    "featured": false
+  },
+  {
+    "id": "gilded-vine",
+    "name": "Gilded Vine",
+    "tagline": "Nude gloss with hand-drawn gold leaves",
+    "price": 399,
+    "originalPrice": 629,
+    "category": "bridal",
+    "image": "/images/products/IMG-20261012-WA0072.jpg",
+    "description": "A luminous nude manicure with fine botanical linework, inspired by delicate vines pressed into a keepsake.",
+    "includes": [
+      "24 press-on nails (12 sizes)",
+      "Nail glue",
+      "Prep pad",
+      "Mini nail file"
+    ],
+    "available": true,
+    "featured": false
+  },
+  {
+    "id": "butterfly-bloom",
+    "name": "Butterfly Bloom",
+    "tagline": "Blush petals with tiny golden wings",
+    "price": 399,
+    "originalPrice": 639,
+    "category": "bridal",
+    "image": "/images/products/IMG-20261012-WA0073.jpg",
+    "description": "A soft blush set layered with butterfly and floral details for a dreamy manicure with a little extra sparkle.",
+    "includes": [
+      "24 press-on nails (12 sizes)",
+      "Nail glue",
+      "Prep pad",
+      "Mini nail file"
+    ],
+    "available": true,
+    "featured": false
+  },
+  {
+    "id": "ruby-ombre",
+    "name": "Ruby Ombre",
+    "tagline": "High-shine red in a confident silhouette",
+    "price": 399,
+    "originalPrice": 649,
+    "category": "festive",
+    "image": "/images/products/IMG-20261012-WA0074.jpg",
+    "description": "A glossy ruby-red set with a bold silhouette that brings instant polish to party looks and late-night plans.",
+    "includes": [
+      "24 press-on nails (12 sizes)",
+      "Nail glue",
+      "Prep pad",
+      "Mini nail file"
+    ],
+    "available": true,
+    "featured": true
+  },
+  {
+    "id": "garden-gold",
+    "name": "Garden Gold",
+    "tagline": "Blush glass with botanical goldwork",
+    "price": 399,
+    "originalPrice": 659,
+    "category": "bridal",
+    "image": "/images/products/IMG-20261012-WA0076.jpg",
+    "description": "A blush-toned set with luminous florals and fine gold leaves, designed for the softest kind of statement.",
+    "includes": [
+      "24 press-on nails (12 sizes)",
+      "Nail glue",
+      "Prep pad",
+      "Mini nail file"
+    ],
+    "available": true,
+    "featured": false
+  },
+  {
+    "id": "silver-sculpt",
+    "name": "Silver Sculpt",
+    "tagline": "Nude almond with fluid silver lines",
+    "price": 399,
+    "originalPrice": 599,
+    "category": "everyday",
+    "image": "/images/products/IMG-20261012-WA0079.jpg",
+    "description": "A glossy nude almond set with sculpted silver curves for a clean, modern finish that goes with everything.",
+    "includes": [
+      "24 press-on nails (12 sizes)",
+      "Nail glue",
+      "Prep pad",
+      "Mini nail file"
+    ],
+    "available": true,
+    "featured": false
+  },
+  {
+    "id": "pink-pearl-bloom",
+    "name": "Pink Pearl Bloom",
+    "tagline": "Blush pink, silver shimmer, and floral pearls",
+    "price": 399,
+    "originalPrice": 609,
+    "category": "bridal",
+    "image": "/images/products/IMG-20261012-WA0080.jpg",
+    "description": "A soft pink set with glittering silver accents and raised floral details for an elegant, light-catching finish.",
+    "includes": [
+      "24 press-on nails (12 sizes)",
+      "Nail glue",
+      "Prep pad",
+      "Mini nail file"
+    ],
+    "available": true,
+    "featured": true
+  },
+  {
+    "id": "rose-garnet-bloom",
+    "name": "Rose Garnet Bloom",
+    "tagline": "Sheer rose with ruby and gold details",
+    "price": 399,
+    "originalPrice": 619,
+    "category": "festive",
+    "image": "/images/products/IMG-20261012-WA0081.jpg",
+    "description": "A sheer rose set with ruby-toned florals and petite gold details for a romantic finish with depth.",
+    "includes": [
+      "24 press-on nails (12 sizes)",
+      "Nail glue",
+      "Prep pad",
+      "Mini nail file"
+    ],
+    "available": true,
+    "featured": false
+  }
+]

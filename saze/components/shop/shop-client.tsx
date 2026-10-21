@@ -1,11 +1,11 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import Link from 'next/link'
 import { Search, ArrowRight } from 'lucide-react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
-import { products, categories, type Category } from '@/lib/products'
+import { products, categories, type Category, type Product } from '@/lib/products'
 import ProductCard from '@/components/product-card'
 
 const sortOptions = [
@@ -22,6 +22,18 @@ export default function ShopClient() {
   const selectedCategory: Category = categories.find((category) => category.value === categoryParam)?.value ?? 'all'
   const [sort, setSort] = useState('featured')
   const [query, setQuery] = useState('')
+  const [catalog, setCatalog] = useState<Product[]>(products)
+
+  useEffect(() => {
+    fetch('/api/products')
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setCatalog(data)
+        }
+      })
+      .catch(() => {})
+  }, [])
 
   function selectCategory(category: Category) {
     const params = new URLSearchParams(searchParams.toString())
@@ -32,7 +44,7 @@ export default function ShopClient() {
 
   const filtered = useMemo(() => {
     const search = query.trim().toLowerCase()
-    const list = products.filter((product) =>
+    const list = catalog.filter((product) =>
       (selectedCategory === 'all' || product.category === selectedCategory) &&
       `${product.name} ${product.tagline} ${product.category}`.toLowerCase().includes(search)
     )
@@ -42,7 +54,7 @@ export default function ShopClient() {
       case 'name-az': return list.sort((a, b) => a.name.localeCompare(b.name))
       default: return list.sort((a, b) => Number(Boolean(b.featured)) - Number(Boolean(a.featured)))
     }
-  }, [selectedCategory, sort, query])
+  }, [catalog, selectedCategory, sort, query])
 
   return (
     <>

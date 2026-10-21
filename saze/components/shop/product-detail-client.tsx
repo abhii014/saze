@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useCart } from '@/lib/cart-context'
 import type { Product } from '@/lib/products'
 import { formatPrice, getCategoryLabel } from '@/lib/products'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import InstagramCheckoutModal from '@/components/instagram-checkout-modal'
 import { INSTAGRAM_USERNAME, buildSingleProductMessage } from '@/lib/instagram'
 
@@ -20,11 +20,24 @@ const badgeStyles: Record<string, string> = {
 export default function ProductDetailClient({ product }: { product: Product }) {
   const { addItem } = useCart()
   const [added, setAdded] = useState(false)
+  const [currentProduct, setCurrentProduct] = useState<Product>(product)
+
+  useEffect(() => {
+    fetch('/api/products')
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data: Product[]) => {
+        if (Array.isArray(data)) {
+          const found = data.find((p) => p.id === product.id)
+          if (found) setCurrentProduct(found)
+        }
+      })
+      .catch(() => {})
+  }, [product.id])
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const orderMessage = buildSingleProductMessage(product.name, product.price)
+  const orderMessage = buildSingleProductMessage(currentProduct.name, currentProduct.price)
 
   function handleAdd() {
-    addItem(product)
+    addItem(currentProduct)
     setAdded(true)
     setTimeout(() => setAdded(false), 2000)
   }
@@ -41,7 +54,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
         <span>/</span>
         <Link href="/shop" className="hover:text-gold transition-colors">Shop</Link>
         <span>/</span>
-        <span className="text-foreground font-medium">{product.name}</span>
+        <span className="text-foreground font-medium">{currentProduct.name}</span>
       </nav>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
@@ -54,7 +67,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
         >
           <Image
             src={product.image}
-            alt={product.name}
+            alt={currentProduct.name}
             fill
             priority
             className="object-cover transition-transform duration-700 group-hover:scale-105"
@@ -87,13 +100,13 @@ export default function ProductDetailClient({ product }: { product: Product }) {
             className="text-4xl md:text-5xl font-light text-foreground mb-2 leading-tight"
             style={{ fontFamily: 'var(--font-cormorant), serif' }}
           >
-            {product.name}
+            {currentProduct.name}
           </h1>
           <p
             className="text-muted-foreground text-sm italic mb-6"
             style={{ fontFamily: 'var(--font-cormorant), serif', fontSize: '1.05rem' }}
           >
-            {product.tagline}
+            {currentProduct.tagline}
           </p>
 
           {/* Price */}
@@ -102,14 +115,14 @@ export default function ProductDetailClient({ product }: { product: Product }) {
               className="text-3xl font-semibold text-gold"
               style={{ fontFamily: 'var(--font-cormorant), serif' }}
             >
-              {formatPrice(product.price)}
+              {formatPrice(currentProduct.price)}
             </span>
-            {product.originalPrice && (
+            {currentProduct.originalPrice && (
               <span
                 className="text-lg text-muted-foreground line-through"
                 style={{ fontFamily: 'var(--font-jost)' }}
               >
-                {formatPrice(product.originalPrice)}
+                {formatPrice(currentProduct.originalPrice)}
               </span>
             )}
           </div>
@@ -119,7 +132,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
             className="text-sm text-muted-foreground leading-relaxed mb-8 border-b border-border pb-8"
             style={{ fontFamily: 'var(--font-jost)' }}
           >
-            {product.description}
+            {currentProduct.description}
           </p>
 
           {/* Includes */}
@@ -131,7 +144,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
               What&apos;s Included
             </p>
             <ul className="space-y-2">
-              {product.includes.map((item) => (
+              {currentProduct.includes.map((item) => (
                 <li
                   key={item}
                   className="flex items-center gap-2 text-sm text-muted-foreground"
@@ -144,7 +157,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
             </ul>
           </div>
 
-          {product.available && (
+          {currentProduct.available && (
             <motion.button
               type="button"
               onClick={() => setIsModalOpen(true)}
@@ -159,13 +172,13 @@ export default function ProductDetailClient({ product }: { product: Product }) {
           {/* Save multiple sets together before ordering. */}
           <motion.button
             onClick={handleAdd}
-            disabled={!product.available}
-            whileHover={product.available ? { scale: 1.01 } : {}}
-            whileTap={product.available ? { scale: 0.98 } : {}}
+            disabled={!currentProduct.available}
+            whileHover={currentProduct.available ? { scale: 1.01 } : {}}
+            whileTap={currentProduct.available ? { scale: 0.98 } : {}}
             className={`flex items-center justify-center gap-2 w-full py-4 rounded-full text-sm font-medium transition-all duration-300 shadow-sm ${
               added
                 ? 'bg-emerald-600 text-white shadow-emerald-900/30'
-                : product.available
+                : currentProduct.available
                 ? 'border border-border text-foreground hover:border-gold hover:text-gold bg-card/60 backdrop-blur-sm'
                 : 'bg-muted text-muted-foreground cursor-not-allowed'
             }`}
@@ -192,7 +205,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
                   className="flex items-center gap-2"
                 >
                   <ShoppingBag size={18} />
-                  {product.available ? 'Add to Cart' : 'Out of Stock'}
+                  {currentProduct.available ? 'Add to Cart' : 'Out of Stock'}
                 </motion.span>
               )}
             </AnimatePresence>

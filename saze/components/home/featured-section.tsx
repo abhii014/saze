@@ -1,10 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { ArrowUpRight } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { products, type Category } from '@/lib/products'
+import { products, type Category, type Product } from '@/lib/products'
 import ProductCard from '@/components/product-card'
 import Reveal from '@/components/reveal'
 
@@ -18,10 +18,22 @@ const edits: { value: Category; label: string }[] = [
 
 export default function FeaturedSection() {
   const [category, setCategory] = useState<Category>('all')
+  const [catalog, setCatalog] = useState<Product[]>(products)
+
+  useEffect(() => {
+    fetch('/api/products')
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setCatalog(data)
+        }
+      })
+      .catch(() => {})
+  }, [])
   const collection =
     category === 'all'
-      ? products.filter((product) => product.featured).slice(0, 4)
-      : products.filter((product) => product.category === category)
+      ? catalog.filter((product) => product.featured).slice(0, 4)
+      : catalog.filter((product) => product.category === category)
 
   return (
     <section id="collection" className="light-section py-20 md:py-28 relative overflow-hidden">
