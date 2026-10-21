@@ -1,4 +1,7 @@
+'use client'
+
 import { Plus } from 'lucide-react'
+import { motion } from 'framer-motion'
 import Reveal from '@/components/reveal'
 import { INSTAGRAM_URL } from '@/lib/instagram'
 
@@ -14,12 +17,34 @@ export default function FaqSection() {
   return (
     <section className="light-section pb-20 md:pb-28">
       <Reveal className="section-shell grid md:grid-cols-[0.8fr_1.2fr] gap-9 md:gap-20 border-t border-border pt-14">
-        <div><p className="eyebrow mb-4">A few little answers</p><h2 className="display-heading mb-5">Good to <em className="text-gold">know.</em></h2><p className="text-xs leading-relaxed text-muted-foreground max-w-xs">Still curious about something? <a href={INSTAGRAM_URL} className="underline underline-offset-4 text-foreground">We&apos;re a DM away.</a></p></div>
+        <div>
+          <p className="eyebrow mb-4">A few little answers</p>
+          <h2 className="display-heading mb-5">
+            Good to <em className="text-gold italic">know.</em>
+          </h2>
+          <p className="text-xs leading-relaxed text-muted-foreground max-w-xs">
+            Still curious about something?{' '}
+            <motion.a
+              href={INSTAGRAM_URL}
+              whileHover={{ x: 2 }}
+              className="underline underline-offset-4 text-foreground hover:text-gold transition-colors inline-block"
+            >
+              We&apos;re a DM away.
+            </motion.a>
+          </p>
+        </div>
         <div>
           {questions.map(({ question, answer }) => (
-            <details key={question} className="faq-item border-b border-border" name="saze-faq">
-              <summary className="flex items-center justify-between gap-5 py-5 text-sm font-medium">{question}<Plus size={17} className="faq-plus shrink-0 text-gold transition-transform" aria-hidden="true" /></summary>
-              <p className="text-xs leading-relaxed text-muted-foreground pb-5 pr-7">{answer}</p>
+            <details key={question} className="faq-item border-b border-border group py-1" name="saze-faq">
+              <summary className="flex items-center justify-between gap-5 py-5 text-sm font-medium hover:text-gold transition-colors cursor-pointer list-none">
+                <span>{question}</span>
+                <span className="p-1 rounded-full bg-border/40 group-hover:bg-gold/15 group-hover:text-gold transition-colors shrink-0">
+                  <Plus size={16} className="faq-plus transition-transform duration-300" aria-hidden="true" />
+                </span>
+              </summary>
+              <p className="text-xs leading-relaxed text-muted-foreground pb-5 pr-7 animate-fadeIn">
+                {answer}
+              </p>
             </details>
           ))}
         </div>

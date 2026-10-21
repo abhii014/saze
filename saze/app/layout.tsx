@@ -46,7 +46,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${cormorant.variable} ${jost.variable} bg-background`}>
-      <body className="antialiased" style={{ fontFamily: 'var(--font-jost), sans-serif' }}>
+      <body className="antialiased grain-overlay" style={{ fontFamily: 'var(--font-jost), sans-serif' }}>
         <Providers>{children}</Providers>
       </body>
     </html>

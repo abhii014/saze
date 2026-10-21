@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { Sparkles, ArrowRight, Palette, Clock, MessageCircle } from 'lucide-react'
+import { motion } from 'framer-motion'
 import InstagramIcon from '@/components/icons/instagram-icon'
 import Navbar from '@/components/navbar'
 import Footer from '@/components/footer'
@@ -57,14 +58,14 @@ export default function CustomOrderPage() {
             className="flex items-center gap-2 text-xs text-muted-foreground mb-6"
             style={{ fontFamily: 'var(--font-jost)' }}
           >
-            <Link href="/" className="hover:text-foreground transition-colors">Home</Link>
+            <Link href="/" className="hover:text-gold transition-colors">Home</Link>
             <span>/</span>
-            <span className="text-foreground">Custom Order</span>
+            <span className="text-foreground font-medium">Custom Order</span>
           </nav>
 
           <div className="max-w-3xl">
             <p
-              className="text-xs text-gold uppercase tracking-[0.2em] mb-4"
+              className="text-xs text-gold uppercase tracking-[0.2em] mb-4 font-medium"
               style={{ fontFamily: 'var(--font-jost)' }}
             >
               ✦ Bespoke Nail Art
@@ -107,15 +108,19 @@ export default function CustomOrderPage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
               {steps.map(({ step, icon: Icon, title, desc }) => (
-                <div key={step} className="relative">
+                <motion.div
+                  key={step}
+                  whileHover={{ y: -5 }}
+                  transition={{ duration: 0.3 }}
+                  className="relative p-6 rounded-xl border border-border/60 bg-card/40 backdrop-blur-sm"
+                >
                   <div className="flex flex-col items-center text-center">
-                    {/* Step number */}
                     <div className="relative mb-5">
-                      <div className="w-14 h-14 rounded-full border border-gold/30 bg-gold/10 flex items-center justify-center">
+                      <div className="w-14 h-14 rounded-full border border-gold/30 bg-gold/10 flex items-center justify-center shadow-inner">
                         <Icon size={22} className="text-gold" />
                       </div>
                       <span
-                        className="absolute -top-1 -right-2 text-xs font-semibold text-gold"
+                        className="absolute -top-1 -right-2 text-xs font-semibold text-gold bg-background px-1.5 py-0.5 rounded-full border border-gold/30"
                         style={{ fontFamily: 'var(--font-jost)' }}
                       >
                         {step}
@@ -134,7 +139,7 @@ export default function CustomOrderPage() {
                       {desc}
                     </p>
                   </div>
-                </div>
+                </motion.div>
               ))}
             </div>
           </div>
@@ -160,9 +165,11 @@ export default function CustomOrderPage() {
 
           <div className="flex flex-wrap justify-center gap-4 mt-10">
             {inspirations.map(({ label, desc, color }) => (
-              <div
+              <motion.div
                 key={label}
-                className={`border rounded-2xl px-6 py-4 text-center min-w-[160px] flex-1 max-w-[220px] ${color}`}
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.98 }}
+                className={`border rounded-2xl px-6 py-4 text-center min-w-[160px] flex-1 max-w-[220px] bg-card/30 backdrop-blur-sm cursor-default shadow-sm ${color}`}
               >
                 <p
                   className="text-sm font-medium mb-1"
@@ -176,7 +183,7 @@ export default function CustomOrderPage() {
                 >
                   {desc}
                 </p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </section>
@@ -204,14 +211,16 @@ export default function CustomOrderPage() {
                   varies based on complexity, embellishments, and length. Final quote shared in DMs.
                 </p>
               </div>
-              <a
+              <motion.a
                 href={dmUrl}
-                className="flex-shrink-0 flex items-center gap-2 bg-gold text-primary-foreground px-6 py-3 rounded-full text-sm font-medium hover:opacity-90 transition-opacity whitespace-nowrap"
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                className="flex-shrink-0 flex items-center gap-2 bg-gold text-primary-foreground px-6 py-3 rounded-full text-sm font-medium hover:opacity-90 transition-opacity whitespace-nowrap shadow-lg"
                 style={{ fontFamily: 'var(--font-jost)', letterSpacing: '0.06em' }}
               >
                 <InstagramIcon size={16} />
                 DM to Start
-              </a>
+              </motion.a>
             </div>
           </div>
         </section>
@@ -239,34 +248,39 @@ export default function CustomOrderPage() {
             We&apos;ll get back to you with a concept and quote within 24 hours.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
+            <motion.a
               href={dmUrl}
-              className="inline-flex items-center justify-center gap-2 bg-gold text-primary-foreground px-8 py-4 rounded-full text-sm font-medium hover:opacity-90 transition-opacity"
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              className="inline-flex items-center justify-center gap-2 bg-gold text-primary-foreground px-8 py-4 rounded-full text-sm font-medium hover:opacity-90 transition-opacity shadow-lg"
               style={{ fontFamily: 'var(--font-jost)', letterSpacing: '0.08em' }}
             >
               <InstagramIcon size={18} />
               DM Us on Instagram
-            </a>
-            <Link
-              href="/shop"
-              className="inline-flex items-center justify-center gap-2 border border-border text-foreground px-8 py-4 rounded-full text-sm font-medium hover:border-gold hover:text-gold transition-colors"
-              style={{ fontFamily: 'var(--font-jost)', letterSpacing: '0.08em' }}
-            >
-              Browse Ready Sets
-              <ArrowRight size={16} />
-            </Link>
+            </motion.a>
+            <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+              <Link
+                href="/shop"
+                className="inline-flex items-center justify-center gap-2 border border-border text-foreground px-8 py-4 rounded-full text-sm font-medium hover:border-gold hover:text-gold transition-colors"
+                style={{ fontFamily: 'var(--font-jost)', letterSpacing: '0.08em' }}
+              >
+                Browse Ready Sets
+                <ArrowRight size={16} />
+              </Link>
+            </motion.div>
           </div>
 
           {/* Instagram handle pill */}
           <div className="mt-10">
-            <a
+            <motion.a
               href={dmUrl}
+              whileHover={{ x: 3 }}
               className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-gold transition-colors"
               style={{ fontFamily: 'var(--font-jost)' }}
             >
               <InstagramIcon size={15} />
               @{INSTAGRAM_USERNAME}
-            </a>
+            </motion.a>
           </div>
         </section>
       </main>

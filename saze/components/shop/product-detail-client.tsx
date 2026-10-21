@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { ShoppingBag, Check, Package, Sparkles } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { useCart } from '@/lib/cart-context'
 import type { Product } from '@/lib/products'
 import { formatPrice, getCategoryLabel } from '@/lib/products'
@@ -11,9 +12,9 @@ import InstagramOrderLink from '@/components/instagram-order-link'
 import { INSTAGRAM_USERNAME } from '@/lib/instagram'
 
 const badgeStyles: Record<string, string> = {
-  bestseller: 'bg-gold text-primary-foreground',
-  new: 'bg-emerald-600 text-white',
-  limited: 'bg-red-900/80 text-red-100',
+  bestseller: 'bg-gold text-primary-foreground border-gold/40',
+  new: 'bg-emerald-600/90 text-white border-emerald-500/40',
+  limited: 'bg-red-900/80 text-red-100 border-red-700/40',
 }
 
 export default function ProductDetailClient({ product }: { product: Product }) {
@@ -34,38 +35,48 @@ export default function ProductDetailClient({ product }: { product: Product }) {
         className="flex items-center gap-2 text-xs text-muted-foreground mb-8"
         style={{ fontFamily: 'var(--font-jost)' }}
       >
-        <Link href="/" className="hover:text-foreground transition-colors">Home</Link>
+        <Link href="/" className="hover:text-gold transition-colors">Home</Link>
         <span>/</span>
-        <Link href="/shop" className="hover:text-foreground transition-colors">Shop</Link>
+        <Link href="/shop" className="hover:text-gold transition-colors">Shop</Link>
         <span>/</span>
-        <span className="text-foreground">{product.name}</span>
+        <span className="text-foreground font-medium">{product.name}</span>
       </nav>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
         {/* Image */}
-        <div className="relative aspect-square rounded-2xl overflow-hidden bg-card">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="relative aspect-square rounded-2xl overflow-hidden bg-card border border-border/60 shadow-2xl group"
+        >
           <Image
             src={product.image}
             alt={product.name}
             fill
             priority
-            className="object-cover"
+            className="object-cover transition-transform duration-700 group-hover:scale-105"
             sizes="(max-width: 1024px) 100vw, 50vw"
           />
           {product.badge && (
             <span
-              className={`absolute top-4 left-4 text-xs font-semibold px-3 py-1.5 rounded-full uppercase tracking-wider ${badgeStyles[product.badge]}`}
+              className={`absolute top-4 left-4 text-xs font-semibold px-3 py-1.5 rounded-full uppercase tracking-wider border backdrop-blur-md shadow-md ${badgeStyles[product.badge]}`}
               style={{ fontFamily: 'var(--font-jost)' }}
             >
-              {product.badge}
+              ✦ {product.badge}
             </span>
           )}
-        </div>
+        </motion.div>
 
         {/* Info */}
-        <div className="flex flex-col justify-center">
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+          className="flex flex-col justify-center"
+        >
           <p
-            className="text-xs text-gold uppercase tracking-[0.2em] mb-2"
+            className="text-xs text-gold uppercase tracking-[0.2em] mb-2 font-medium"
             style={{ fontFamily: 'var(--font-jost)' }}
           >
             ✦ {getCategoryLabel(product.category)}
@@ -78,7 +89,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
           </h1>
           <p
             className="text-muted-foreground text-sm italic mb-6"
-            style={{ fontFamily: 'var(--font-cormorant), serif', fontSize: '1rem' }}
+            style={{ fontFamily: 'var(--font-cormorant), serif', fontSize: '1.05rem' }}
           >
             {product.tagline}
           </p>
@@ -134,46 +145,67 @@ export default function ProductDetailClient({ product }: { product: Product }) {
           {product.available && (
             <InstagramOrderLink className="button-primary w-full mb-3" label={`Order ${product.name} on Instagram`} />
           )}
+
           {/* Save multiple sets together before ordering. */}
-          <button
+          <motion.button
             onClick={handleAdd}
             disabled={!product.available}
-            className={`flex items-center justify-center gap-2 w-full py-4 rounded-full text-sm font-medium transition-all duration-200 ${
+            whileHover={product.available ? { scale: 1.01 } : {}}
+            whileTap={product.available ? { scale: 0.98 } : {}}
+            className={`flex items-center justify-center gap-2 w-full py-4 rounded-full text-sm font-medium transition-all duration-300 shadow-sm ${
               added
-                ? 'bg-emerald-600 text-white'
+                ? 'bg-emerald-600 text-white shadow-emerald-900/30'
                 : product.available
-                ? 'border border-border text-foreground hover:border-gold'
+                ? 'border border-border text-foreground hover:border-gold hover:text-gold bg-card/60 backdrop-blur-sm'
                 : 'bg-muted text-muted-foreground cursor-not-allowed'
             }`}
             style={{ fontFamily: 'var(--font-jost)', letterSpacing: '0.1em' }}
           >
-            {added ? (
-              <>
-                <Check size={18} />
-                Added to Cart
-              </>
-            ) : (
-              <>
-                <ShoppingBag size={18} />
-                {product.available ? 'Add to Cart' : 'Out of Stock'}
-              </>
-            )}
-          </button>
+            <AnimatePresence mode="wait">
+              {added ? (
+                <motion.span
+                  key="added"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="flex items-center gap-2"
+                >
+                  <Check size={18} />
+                  Added to Cart
+                </motion.span>
+              ) : (
+                <motion.span
+                  key="add"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="flex items-center gap-2"
+                >
+                  <ShoppingBag size={18} />
+                  {product.available ? 'Add to Cart' : 'Out of Stock'}
+                </motion.span>
+              )}
+            </AnimatePresence>
+          </motion.button>
 
           <p className="text-center text-xs leading-relaxed text-muted-foreground mt-4">
             Ordering takes you to @{INSTAGRAM_USERNAME}. Message us with this design to confirm sizing and availability.
           </p>
 
           {added && (
-            <div className="mt-4 text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mt-4 text-center"
+            >
               <Link
                 href="/cart"
-                className="text-sm text-gold hover:underline"
+                className="text-sm text-gold hover:underline font-medium inline-block"
                 style={{ fontFamily: 'var(--font-jost)' }}
               >
                 View Cart &rarr;
               </Link>
-            </div>
+            </motion.div>
           )}
 
           {/* Trust badges */}
@@ -182,9 +214,10 @@ export default function ProductDetailClient({ product }: { product: Product }) {
               { icon: Package, text: 'Pan-India Shipping' },
               { icon: Sparkles, text: 'Handcrafted Quality' },
             ].map(({ icon: Icon, text }) => (
-              <div
+              <motion.div
                 key={text}
-                className="flex items-center gap-2 border border-border rounded-xl p-3"
+                whileHover={{ y: -2 }}
+                className="flex items-center gap-2 border border-border/80 bg-card/30 rounded-xl p-3.5 transition-colors hover:border-gold/30"
               >
                 <Icon size={16} className="text-gold flex-shrink-0" />
                 <span
@@ -193,10 +226,10 @@ export default function ProductDetailClient({ product }: { product: Product }) {
                 >
                   {text}
                 </span>
-              </div>
+              </motion.div>
             ))}
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   )
