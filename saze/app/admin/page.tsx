@@ -31,6 +31,7 @@ export default function AdminPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [loginError, setLoginError] = useState('')
   const [loggingIn, setLoggingIn] = useState(false)
+  const [showForgotModal, setShowForgotModal] = useState(false)
 
   // Catalog state
   const [products, setProducts] = useState<Product[]>([])
@@ -99,7 +100,7 @@ export default function AdminPage() {
           setProducts(data)
         }
       } else {
-        setLoginError('Incorrect password. Default is: saze2026')
+        setLoginError('Incorrect password. Please try again.')
       }
     } catch {
       setLoginError('Connection error. Please try again.')
@@ -346,9 +347,36 @@ export default function AdminPage() {
             </button>
           </form>
 
-          <p className="text-center text-[11px] text-muted-foreground/70 mt-6" style={{ fontFamily: 'var(--font-jost)' }}>
-            Default password: <span className="text-gold font-mono">saze2026</span>
-          </p>
+          <div className="mt-5 text-center" style={{ fontFamily: 'var(--font-jost)' }}>
+            <button
+              type="button"
+              onClick={() => setShowForgotModal(!showForgotModal)}
+              className="text-xs text-muted-foreground hover:text-gold transition-colors inline-flex items-center gap-1"
+            >
+              Forgot password?
+            </button>
+
+            <AnimatePresence>
+              {showForgotModal && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className="mt-3 p-3.5 bg-background/90 border border-gold/30 rounded-xl text-left text-xs text-muted-foreground leading-relaxed shadow-sm overflow-hidden"
+                >
+                  <p className="font-medium text-foreground mb-1 text-gold flex items-center gap-1.5">
+                    ✦ Password Recovery
+                  </p>
+                  <p className="mb-2">
+                    To reset or change your password at any time, log into your <strong>Vercel Dashboard &rarr; Project Settings &rarr; Environment Variables</strong> and update <code className="text-gold font-mono">ADMIN_PASSWORD</code>.
+                  </p>
+                  <p className="text-[11px] text-muted-foreground/80">
+                    If you haven&apos;t customized it yet, your original password remains active. Contact your site admin if you need assistance.
+                  </p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
 
           <div className="mt-6 pt-6 border-t border-border/40 text-center">
             <Link
