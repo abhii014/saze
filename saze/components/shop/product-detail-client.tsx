@@ -8,8 +8,8 @@ import { useCart } from '@/lib/cart-context'
 import type { Product } from '@/lib/products'
 import { formatPrice, getCategoryLabel } from '@/lib/products'
 import { useState } from 'react'
-import InstagramOrderLink from '@/components/instagram-order-link'
-import { INSTAGRAM_USERNAME } from '@/lib/instagram'
+import InstagramCheckoutModal from '@/components/instagram-checkout-modal'
+import { INSTAGRAM_USERNAME, buildSingleProductMessage } from '@/lib/instagram'
 
 const badgeStyles: Record<string, string> = {
   bestseller: 'bg-gold text-primary-foreground border-gold/40',
@@ -20,6 +20,8 @@ const badgeStyles: Record<string, string> = {
 export default function ProductDetailClient({ product }: { product: Product }) {
   const { addItem } = useCart()
   const [added, setAdded] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const orderMessage = buildSingleProductMessage(product.name, product.price)
 
   function handleAdd() {
     addItem(product)
@@ -143,7 +145,15 @@ export default function ProductDetailClient({ product }: { product: Product }) {
           </div>
 
           {product.available && (
-            <InstagramOrderLink className="button-primary w-full mb-3" label={`Order ${product.name} on Instagram`} />
+            <motion.button
+              type="button"
+              onClick={() => setIsModalOpen(true)}
+              whileHover={{ scale: 1.01 }}
+              whileTap={{ scale: 0.98 }}
+              className="button-primary w-full mb-3 min-h-[50px] rounded-full shadow-lg text-sm font-medium tracking-wide"
+            >
+              Order on Instagram
+            </motion.button>
           )}
 
           {/* Save multiple sets together before ordering. */}
@@ -189,7 +199,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
           </motion.button>
 
           <p className="text-center text-xs leading-relaxed text-muted-foreground mt-4">
-            Ordering takes you to @{INSTAGRAM_USERNAME}. Message us with this design to confirm sizing and availability.
+            Ordering opens Instagram DMs with @{INSTAGRAM_USERNAME} to confirm sizing and availability.
           </p>
 
           {added && (
@@ -231,6 +241,13 @@ export default function ProductDetailClient({ product }: { product: Product }) {
           </div>
         </motion.div>
       </div>
+
+      {/* Checkout Modal for this product */}
+      <InstagramCheckoutModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        message={orderMessage}
+      />
     </div>
   )
 }

@@ -2,29 +2,18 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { Minus, Plus, Trash2, ShoppingBag, Copy, Check, ArrowRight } from 'lucide-react'
+import { Minus, Plus, Trash2, ShoppingBag, ArrowRight } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useCart } from '@/lib/cart-context'
 import { formatPrice } from '@/lib/products'
-import { useRef, useState } from 'react'
-import InstagramOrderLink from '@/components/instagram-order-link'
+import { useState } from 'react'
+import InstagramCheckoutModal from '@/components/instagram-checkout-modal'
 import { buildOrderMessage, INSTAGRAM_USERNAME } from '@/lib/instagram'
 
 export default function CartClient() {
   const { items, removeItem, updateQty, clearCart, subtotal, totalItems, isHydrated } = useCart()
-  const [copyStatus, setCopyStatus] = useState<'idle' | 'copied' | 'manual'>('idle')
-  const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const message = buildOrderMessage(items, subtotal)
-
-  async function copyOrder() {
-    try {
-      await navigator.clipboard.writeText(message)
-      setCopyStatus('copied')
-    } catch {
-      setCopyStatus('manual')
-      requestAnimationFrame(() => textareaRef.current?.select())
-    }
-  }
 
   if (!isHydrated) {
     return (
@@ -104,7 +93,7 @@ export default function CartClient() {
                     <div className="inline-flex items-center border border-border rounded-sm bg-card/40">
                       <button
                         type="button"
-                        onClick={() => { updateQty(product.id, quantity - 1); setCopyStatus('idle') }}
+                        onClick={() => updateQty(product.id, quantity - 1)}
                         className="h-10 w-10 grid place-items-center hover:text-gold transition-colors"
                         aria-label={`Decrease quantity of ${product.name}`}
                       >
@@ -113,7 +102,7 @@ export default function CartClient() {
                       <span className="min-w-7 text-center text-xs font-medium" aria-label={`Quantity ${quantity}`}>{quantity}</span>
                       <button
                         type="button"
-                        onClick={() => { updateQty(product.id, quantity + 1); setCopyStatus('idle') }}
+                        onClick={() => updateQty(product.id, quantity + 1)}
                         className="h-10 w-10 grid place-items-center hover:text-gold transition-colors"
                         aria-label={`Increase quantity of ${product.name}`}
                       >
@@ -122,7 +111,7 @@ export default function CartClient() {
                     </div>
                     <button
                       type="button"
-                      onClick={() => { removeItem(product.id); setCopyStatus('idle') }}
+                      onClick={() => removeItem(product.id)}
                       className="inline-flex items-center gap-1.5 text-[11px] text-muted-foreground hover:text-red-400 transition-colors min-h-10"
                       aria-label={`Remove ${product.name}`}
                     >
@@ -140,70 +129,56 @@ export default function CartClient() {
           </Link>
         </div>
 
-        <aside className="bg-card/70 backdrop-blur-md p-6 sm:p-8 self-start lg:sticky lg:top-32 border border-border/80 rounded-sm shadow-xl">
-          <h2 className="font-serif text-3xl mb-6">The lovely little details</h2>
-          <div className="space-y-3 text-xs mb-5">
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">Sets</span>
-              <span className="font-medium">{totalItems}</span>
+        {/* Order Summary Sidebar */}
+        <aside className="bg-card/70 backdrop-blur-md p-6 sm:p-8 self-start lg:sticky lg:top-32 border border-border/80 rounded-2xl shadow-xl">
+          <h2 className="font-serif text-3xl mb-6">Order summary</h2>
+          <div className="space-y-3.5 text-xs mb-6">
+            <div className="flex justify-between items-center">
+              <span className="text-muted-foreground">Items</span>
+              <span className="font-medium text-foreground">{totalItems}</span>
             </div>
-            <div className="flex justify-between">
+            <div className="flex justify-between items-center">
+              <span className="text-muted-foreground">Subtotal</span>
+              <span className="text-sm font-medium text-gold font-serif">{formatPrice(subtotal)}</span>
+            </div>
+            <div className="flex justify-between items-center">
               <span className="text-muted-foreground">Shipping</span>
-              <span className="font-medium text-gold">Confirmed in DMs</span>
+              <span className="text-xs text-muted-foreground">Calculated at checkout</span>
             </div>
           </div>
-          <div className="border-t border-border pt-4 flex justify-between items-baseline mb-6">
-            <span className="text-sm font-medium">Subtotal</span>
-            <span className="text-2xl font-semibold text-gold font-serif">{formatPrice(subtotal)}</span>
+
+          <div className="border-t border-border/80 pt-5 mb-5">
+            <motion.button
+              type="button"
+              onClick={() => setIsModalOpen(true)}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="button-primary w-full min-h-[50px] rounded-full shadow-lg text-sm font-medium tracking-wide"
+            >
+              Order on Instagram
+            </motion.button>
+            <p className="text-center text-[11px] text-muted-foreground mt-3 leading-relaxed">
+              We&apos;ll walk you through sending your order to{' '}
+              <span className="text-gold font-medium">@{INSTAGRAM_USERNAME}</span>.
+            </p>
           </div>
-          <p className="text-xs text-muted-foreground leading-relaxed mb-5">
-            Copy the ready-to-send order message, then open Instagram. On @{INSTAGRAM_USERNAME}, tap Message and paste it into your conversation.
-          </p>
-          <motion.button
-            type="button"
-            onClick={copyOrder}
-            whileHover={{ scale: 1.01 }}
-            whileTap={{ scale: 0.98 }}
-            className="button-outline w-full mb-3"
-          >
-            {copyStatus === 'copied' ? <Check size={16} className="text-emerald-500" /> : <Copy size={16} />}
-            {copyStatus === 'copied' ? 'Message copied' : 'Copy order message'}
-          </motion.button>
-          <InstagramOrderLink
-            className="button-primary w-full shadow-lg"
-            target="_blank"
-            rel="noopener noreferrer"
-            label="Open Instagram to send your order message"
-          >
-            Open Instagram to order
-          </InstagramOrderLink>
-          <p role="status" className="text-[11px] text-muted-foreground mt-3 leading-relaxed">
-            {copyStatus === 'copied'
-              ? 'Copied! Your cart stays here while you paste the message in Instagram.'
-              : copyStatus === 'manual'
-              ? 'Automatic copying is unavailable. The order message is selected below — copy it, then open Instagram.'
-              : 'Availability, fit, payment, and delivery are confirmed personally in DMs.'}
-          </p>
-          <details className="mt-5 text-xs" open={copyStatus === 'manual' ? true : undefined}>
-            <summary className="text-muted-foreground hover:text-foreground cursor-pointer">View your order message</summary>
-            <textarea
-              ref={textareaRef}
-              readOnly
-              value={message}
-              onFocus={(event) => event.currentTarget.select()}
-              aria-label="Your order message — select to copy"
-              className="mt-3 w-full h-48 resize-y border border-border bg-background/80 p-3 text-xs leading-relaxed rounded-sm focus:outline-none focus:border-gold"
-            />
-          </details>
+
           <button
             type="button"
             onClick={clearCart}
-            className="w-full mt-5 text-[11px] min-h-10 text-muted-foreground hover:text-foreground transition-colors"
+            className="w-full text-[11px] text-muted-foreground hover:text-foreground transition-colors py-2 text-center"
           >
             Clear cart
           </button>
         </aside>
       </div>
+
+      {/* Checkout Modal */}
+      <InstagramCheckoutModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        message={message}
+      />
     </div>
   )
 }
