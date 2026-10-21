@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { ShoppingBag, Menu, X, ArrowUpRight } from 'lucide-react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, type Variants } from 'framer-motion'
 import { useCart } from '@/lib/cart-context'
 import { useState, useEffect, useRef } from 'react'
 import { usePathname } from 'next/navigation'
@@ -16,20 +16,20 @@ const navLinks = [
   { href: '/custom-order', label: 'Made for you' },
 ]
 
-const menuVariants = {
+const menuVariants: Variants = {
   closed: {
     opacity: 0,
-    transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] as const },
   },
   open: {
     opacity: 1,
-    transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1], staggerChildren: 0.07, delayChildren: 0.15 },
+    transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] as const, staggerChildren: 0.07, delayChildren: 0.15 },
   },
 }
 
-const menuItemVariants = {
+const menuItemVariants: Variants = {
   closed: { opacity: 0, x: -30, filter: 'blur(6px)' },
-  open: { opacity: 1, x: 0, filter: 'blur(0px)', transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
+  open: { opacity: 1, x: 0, filter: 'blur(0px)', transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] as const } },
 }
 
 export default function Navbar() {
@@ -98,7 +98,7 @@ export default function Navbar() {
       <motion.header
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as const }}
         className={`fixed inset-x-0 top-0 z-50 border-b transition-all duration-500 ${
           scrolled || mobileOpen
             ? 'border-border bg-background/80 nav-blur shadow-[0_4px_30px_rgba(0,0,0,0.25)]'
@@ -109,7 +109,7 @@ export default function Navbar() {
           <motion.span
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ delay: 0.5, duration: 0.5, ease: [0.22, 1, 0.36, 1] as const }}
           >
             A little luxury, delivered. <span className="mx-2" aria-hidden="true">✦</span> Pan-India shipping
           </motion.span>

@@ -83,7 +83,7 @@ export default function CartClient() {
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, x: -30, height: 0, overflow: 'hidden' }}
-                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] as const }}
                 className="flex gap-4 sm:gap-6 border-t border-border py-6"
               >
                 <Link

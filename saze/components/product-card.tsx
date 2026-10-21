@@ -28,7 +28,7 @@ export default function ProductCard({ product }: { product: Product }) {
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-40px' }}
-      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] as const }}
       className="group flex flex-col min-w-0 product-card-premium rounded-sm p-2 -m-2 transition-all"
     >
       <div className="relative">
@@ -41,7 +41,7 @@ export default function ProductCard({ product }: { product: Product }) {
             className="w-full h-full relative"
             whileHover={{ scale: 1.06 }}
             whileTap={{ scale: 0.98 }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] as const }}
           >
             <Image
               src={product.image}

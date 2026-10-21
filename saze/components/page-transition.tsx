@@ -1,9 +1,9 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { motion, type Variants } from 'framer-motion'
 import { type ReactNode } from 'react'
 
-const pageVariants = {
+const pageVariants: Variants = {
   hidden: {
     opacity: 0,
     y: 30,
@@ -15,7 +15,7 @@ const pageVariants = {
     filter: 'blur(0px)',
     transition: {
       duration: 0.7,
-      ease: [0.22, 1, 0.36, 1],
+      ease: [0.22, 1, 0.36, 1] as const,
       staggerChildren: 0.08,
     },
   },
@@ -25,7 +25,7 @@ const pageVariants = {
     filter: 'blur(4px)',
     transition: {
       duration: 0.4,
-      ease: [0.22, 1, 0.36, 1],
+      ease: [0.22, 1, 0.36, 1] as const,
     },
   },
 }

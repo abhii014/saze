@@ -47,7 +47,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] as const }}
           className="relative aspect-square rounded-2xl overflow-hidden bg-card border border-border/60 shadow-2xl group"
         >
           <Image
@@ -72,7 +72,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
         <motion.div
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] as const }}
           className="flex flex-col justify-center"
         >
           <p
