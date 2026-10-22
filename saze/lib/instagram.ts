@@ -3,6 +3,7 @@ import { formatPrice } from '@/lib/products'
 
 export const INSTAGRAM_USERNAME = '_saze.in_'
 export const INSTAGRAM_URL = `https://www.instagram.com/${INSTAGRAM_USERNAME}/`
+export const INSTAGRAM_APP_URL = `instagram://user?username=${INSTAGRAM_USERNAME}`
 // Official Instagram DM shortlink: opens directly in Instagram app chat on mobile
 export const INSTAGRAM_DM_URL = `https://ig.me/m/${INSTAGRAM_USERNAME}`
 

@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Check, Sparkles } from 'lucide-react'
+import { X, Check, Sparkles, ExternalLink } from 'lucide-react'
 import InstagramIcon from '@/components/icons/instagram-icon'
-import { INSTAGRAM_DM_URL } from '@/lib/instagram'
+import { INSTAGRAM_USERNAME, INSTAGRAM_URL, INSTAGRAM_APP_URL } from '@/lib/instagram'
 
 interface Props {
   isOpen: boolean
@@ -14,10 +14,12 @@ interface Props {
 
 export default function InstagramCheckoutModal({ isOpen, onClose, message }: Props) {
   const [copied, setCopied] = useState(false)
+  const [copiedAction, setCopiedAction] = useState<'app' | 'web' | null>(null)
 
   useEffect(() => {
     if (!isOpen) {
       setCopied(false)
+      setCopiedAction(null)
       return
     }
 
@@ -37,20 +39,40 @@ export default function InstagramCheckoutModal({ isOpen, onClose, message }: Pro
     }
   }, [isOpen, onClose])
 
-  async function handleOpenInstagram() {
+  async function handleOpenApp() {
     try {
       await navigator.clipboard.writeText(message)
       setCopied(true)
+      setCopiedAction('app')
     } catch {
       // fallback
     }
 
-    // Open Instagram DMs in a new tab/app window
-    window.open(INSTAGRAM_DM_URL, '_blank', 'noopener,noreferrer')
+    // Launch native Instagram App on laptop or mobile phone
+    window.location.href = INSTAGRAM_APP_URL
 
     setTimeout(() => {
       setCopied(false)
-    }, 3500)
+      setCopiedAction(null)
+    }, 4000)
+  }
+
+  async function handleOpenWeb() {
+    try {
+      await navigator.clipboard.writeText(message)
+      setCopied(true)
+      setCopiedAction('web')
+    } catch {
+      // fallback
+    }
+
+    // Open Instagram Web in a new tab
+    window.open(INSTAGRAM_URL, '_blank', 'noopener,noreferrer')
+
+    setTimeout(() => {
+      setCopied(false)
+      setCopiedAction(null)
+    }, 4000)
   }
 
   return (
@@ -116,10 +138,10 @@ export default function InstagramCheckoutModal({ isOpen, onClose, message }: Pro
                 </div>
                 <div>
                   <h3 className="text-xs sm:text-sm font-medium text-foreground">
-                    Open SAZÉ&apos;s Instagram DMs
+                    Launch Instagram &amp; copy order
                   </h3>
                   <p className="text-xs text-muted-foreground leading-relaxed mt-0.5">
-                    Tap below: your order is copied automatically and the chat opens.
+                    Tap below: your order is auto-copied and opens your logged-in Instagram application.
                   </p>
                 </div>
               </div>
@@ -131,10 +153,10 @@ export default function InstagramCheckoutModal({ isOpen, onClose, message }: Pro
                 </div>
                 <div>
                   <h3 className="text-xs sm:text-sm font-medium text-foreground">
-                    Paste &amp; send
+                    Paste &amp; send in DM
                   </h3>
                   <p className="text-xs text-muted-foreground leading-relaxed mt-0.5">
-                    Drop it into the message box, hit send, and SAZÉ takes it from there 💛
+                    Tap Message, paste your order (Ctrl+V), and SAZÉ will confirm sizing and shipping 💛
                   </p>
                 </div>
               </div>
@@ -143,38 +165,51 @@ export default function InstagramCheckoutModal({ isOpen, onClose, message }: Pro
             {/* Your Message Box */}
             <div className="mb-4 sm:mb-5">
               <p className="text-[10px] tracking-[0.18em] uppercase font-semibold text-gold mb-1.5" style={{ fontFamily: 'var(--font-jost)' }}>
-                Your message
+                Your order message
               </p>
               <div className="bg-white/90 dark:bg-card/80 border border-border/70 rounded-xl p-3 sm:p-3.5 text-xs leading-relaxed max-h-28 sm:max-h-36 overflow-y-auto whitespace-pre-wrap font-sans text-foreground/90 shadow-inner select-text">
                 {message}
               </div>
             </div>
 
-            {/* Action Button */}
+            {/* Primary Action Button: Opens native Instagram App */}
             <motion.button
               type="button"
-              onClick={handleOpenInstagram}
+              onClick={handleOpenApp}
               whileHover={{ scale: 1.01 }}
               whileTap={{ scale: 0.98 }}
-              className="w-full min-h-[48px] sm:min-h-[52px] rounded-full bg-gold hover:bg-gold/90 text-primary-foreground font-medium text-sm flex items-center justify-center gap-2.5 shadow-lg shadow-gold/20 transition-colors"
+              className="w-full min-h-[48px] sm:min-h-[50px] rounded-full bg-gold hover:bg-gold/90 text-primary-foreground font-medium text-sm flex items-center justify-center gap-2.5 shadow-lg shadow-gold/20 transition-colors"
               style={{ fontFamily: 'var(--font-jost)', letterSpacing: '0.04em' }}
             >
-              {copied ? (
+              {copied && copiedAction === 'app' ? (
                 <>
                   <Check size={18} className="text-primary-foreground" />
-                  <span>Copied! Opening Instagram…</span>
+                  <span>Copied! Opening Instagram App…</span>
                 </>
               ) : (
                 <>
                   <InstagramIcon size={19} />
-                  <span>Open Instagram &amp; paste</span>
+                  <span>Open in Instagram App &amp; paste</span>
                 </>
               )}
             </motion.button>
 
+            {/* Secondary Action Option: Web Browser */}
+            <div className="mt-3 text-center">
+              <button
+                type="button"
+                onClick={handleOpenWeb}
+                className="text-xs text-muted-foreground hover:text-gold transition-colors inline-flex items-center gap-1.5 py-1 underline-offset-4 hover:underline"
+                style={{ fontFamily: 'var(--font-jost)' }}
+              >
+                <span>Or open in web browser (instagram.com)</span>
+                <ExternalLink size={13} />
+              </button>
+            </div>
+
             {/* Note under button */}
-            <p className="text-center text-[11px] text-muted-foreground mt-2.5 leading-relaxed" style={{ fontFamily: 'var(--font-jost)' }}>
-              No online payment, you&apos;ll settle up with SAZÉ in the chat.
+            <p className="text-center text-[11px] text-muted-foreground/80 mt-2 leading-relaxed" style={{ fontFamily: 'var(--font-jost)' }}>
+              No online payment here — you&apos;ll confirm and pay SAZÉ directly in DM.
             </p>
           </motion.div>
         </div>
