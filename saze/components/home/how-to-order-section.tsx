@@ -22,7 +22,7 @@ export default function HowToOrderSection() {
               Your next set, <em className="text-gold italic">in three steps.</em>
             </h2>
           </div>
-          <span className="text-xs text-muted-foreground max-w-[230px] leading-relaxed">
+          <span className="text-sm text-muted-foreground max-w-[260px] leading-relaxed">
             A real conversation. A set you love. That&apos;s how we do things.
           </span>
         </div>
@@ -35,13 +35,13 @@ export default function HowToOrderSection() {
               className="border-t border-border pt-6 group"
             >
               <div className="flex items-center justify-between mb-6">
-                <span className="font-serif text-4xl text-gold group-hover:scale-105 transition-transform">{number}</span>
+                <span className="font-serif text-3xl text-gold group-hover:scale-105 transition-transform">{number}</span>
                 <div className="p-2.5 rounded-full bg-gold/10 text-gold group-hover:bg-gold group-hover:text-primary-foreground transition-colors">
                   <Icon size={20} strokeWidth={1.5} />
                 </div>
               </div>
-              <h3 className="font-serif text-3xl mb-3 group-hover:text-gold transition-colors">{title}</h3>
-              <p className="text-xs leading-relaxed text-muted-foreground">{description}</p>
+              <h3 className="font-serif text-2xl mb-2 group-hover:text-gold transition-colors">{title}</h3>
+              <p className="text-sm leading-relaxed text-muted-foreground">{description}</p>
             </motion.div>
           ))}
         </div>

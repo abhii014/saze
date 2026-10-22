@@ -47,7 +47,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
       {/* Breadcrumb */}
       <nav
         aria-label="Breadcrumb"
-        className="flex items-center gap-2 text-xs text-muted-foreground mb-8"
+        className="flex items-center gap-2.5 text-sm sm:text-base text-muted-foreground mb-8"
         style={{ fontFamily: 'var(--font-jost)' }}
       >
         <Link href="/" className="hover:text-gold transition-colors">Home</Link>
@@ -91,20 +91,20 @@ export default function ProductDetailClient({ product }: { product: Product }) {
           className="flex flex-col justify-center"
         >
           <p
-            className="text-xs text-gold uppercase tracking-[0.2em] mb-2 font-medium"
+            className="text-sm text-gold uppercase tracking-[0.16em] mb-2 font-medium"
             style={{ fontFamily: 'var(--font-jost)' }}
           >
             ✦ {getCategoryLabel(product.category)}
           </p>
           <h1
-            className="text-4xl md:text-5xl font-light text-foreground mb-2 leading-tight"
+            className="text-3xl md:text-4xl font-light text-foreground mb-2 leading-tight"
             style={{ fontFamily: 'var(--font-cormorant), serif' }}
           >
             {currentProduct.name}
           </h1>
           <p
             className="text-muted-foreground text-sm italic mb-6"
-            style={{ fontFamily: 'var(--font-cormorant), serif', fontSize: '1.05rem' }}
+            style={{ fontFamily: 'var(--font-cormorant), serif', fontSize: '1.15rem' }}
           >
             {currentProduct.tagline}
           </p>
@@ -129,7 +129,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
 
           {/* Description */}
           <p
-            className="text-sm text-muted-foreground leading-relaxed mb-8 border-b border-border pb-8"
+            className="text-base text-muted-foreground leading-relaxed mb-8 border-b border-border pb-8"
             style={{ fontFamily: 'var(--font-jost)' }}
           >
             {currentProduct.description}
@@ -138,7 +138,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
           {/* Includes */}
           <div className="mb-8">
             <p
-              className="text-xs text-gold uppercase tracking-widest mb-3"
+              className="text-sm text-gold uppercase tracking-widest mb-3"
               style={{ fontFamily: 'var(--font-jost)' }}
             >
               What&apos;s Included
@@ -147,7 +147,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
               {currentProduct.includes.map((item) => (
                 <li
                   key={item}
-                  className="flex items-center gap-2 text-sm text-muted-foreground"
+                  className="flex items-center gap-2 text-sm sm:text-base text-muted-foreground"
                   style={{ fontFamily: 'var(--font-jost)' }}
                 >
                   <Check size={14} className="text-gold flex-shrink-0" />
@@ -211,7 +211,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
             </AnimatePresence>
           </motion.button>
 
-          <p className="text-center text-xs leading-relaxed text-muted-foreground mt-4">
+          <p className="text-center text-sm leading-relaxed text-muted-foreground mt-4">
             Ordering opens Instagram DMs with @{INSTAGRAM_USERNAME} to confirm sizing and availability.
           </p>
 

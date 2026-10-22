@@ -63,13 +63,13 @@ export default function CustomOrderPage() {
 
           <div className="max-w-3xl">
             <p
-              className="text-xs text-gold uppercase tracking-[0.2em] mb-4 font-medium"
+              className="text-sm text-gold uppercase tracking-[0.16em] mb-4 font-medium"
               style={{ fontFamily: 'var(--font-jost)' }}
             >
               ✦ Bespoke Nail Art
             </p>
             <h1
-              className="text-5xl sm:text-6xl md:text-7xl font-light leading-none mb-6 text-balance"
+              className="text-4xl sm:text-5xl md:text-6xl font-light leading-[1.05] mb-6 text-balance"
               style={{ fontFamily: 'var(--font-cormorant), serif' }}
             >
               Your nails,<br />
@@ -90,13 +90,13 @@ export default function CustomOrderPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-14">
               <p
-                className="text-xs text-gold uppercase tracking-[0.2em] mb-3"
+                className="text-sm text-gold uppercase tracking-[0.16em] mb-3"
                 style={{ fontFamily: 'var(--font-jost)' }}
               >
                 ✦ The Process
               </p>
               <h2
-                className="text-4xl md:text-5xl font-light leading-tight"
+                className="text-3xl md:text-4xl font-light leading-tight"
                 style={{ fontFamily: 'var(--font-cormorant), serif' }}
               >
                 How it
@@ -147,13 +147,13 @@ export default function CustomOrderPage() {
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
           <div className="text-center mb-10">
             <p
-              className="text-xs text-gold uppercase tracking-[0.2em] mb-3"
+              className="text-sm text-gold uppercase tracking-[0.16em] mb-3"
               style={{ fontFamily: 'var(--font-jost)' }}
             >
               ✦ Popular Custom Styles
             </p>
             <h2
-              className="text-4xl md:text-5xl font-light leading-tight"
+              className="text-3xl md:text-4xl font-light leading-tight"
               style={{ fontFamily: 'var(--font-cormorant), serif' }}
             >
               What can we
@@ -226,13 +226,13 @@ export default function CustomOrderPage() {
         {/* Final CTA */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28 text-center">
           <p
-            className="text-xs text-gold uppercase tracking-[0.2em] mb-4"
+            className="text-sm text-gold uppercase tracking-[0.16em] mb-4"
             style={{ fontFamily: 'var(--font-jost)' }}
           >
             ✦ Ready to Create?
           </p>
           <h2
-            className="text-4xl md:text-5xl font-light leading-tight mb-6 text-balance"
+            className="text-3xl md:text-4xl font-light leading-tight mb-6 text-balance"
             style={{ fontFamily: 'var(--font-cormorant), serif' }}
           >
             Let&apos;s build your

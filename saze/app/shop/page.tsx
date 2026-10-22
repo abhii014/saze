@@ -15,7 +15,7 @@ export default function ShopPage() {
         <div className="section-shell py-12 md:py-16">
           {/* Header */}
           <div className="mb-10">
-            <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs text-muted-foreground mb-4" style={{ fontFamily: 'var(--font-jost)' }}>
+            <nav aria-label="Breadcrumb" className="flex items-center gap-2.5 text-sm sm:text-base text-muted-foreground mb-4" style={{ fontFamily: 'var(--font-jost)' }}>
               <Link href="/" className="hover:text-foreground transition-colors">Home</Link>
               <span>/</span>
               <span className="text-foreground">Shop</span>
@@ -28,7 +28,7 @@ export default function ShopPage() {
               The little <em className="text-gold">glam collection.</em>
             </h1>
             <p
-              className="text-muted-foreground mt-2 text-sm leading-relaxed"
+              className="text-muted-foreground mt-2 text-base leading-relaxed"
               style={{ fontFamily: 'var(--font-jost)' }}
             >
               Every detail is made to order. Explore press-on nails and new necklaces, then DM us on Instagram to place your order.

@@ -102,7 +102,7 @@ export default function Navbar() {
       <header
         className="fixed inset-x-0 top-0 z-50 border-b border-border bg-[#101526]/85 backdrop-blur-xl nav-blur shadow-[0_4px_30px_rgba(0,0,0,0.25)]"
       >
-        <div className="border-b border-cream/10 py-2 text-center text-[9px] sm:text-[10px] tracking-[0.18em] uppercase text-gold">
+        <div className="border-b border-cream/10 py-2 text-center text-[11px] sm:text-xs tracking-[0.14em] uppercase text-gold font-medium">
           <motion.span
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -126,7 +126,7 @@ export default function Navbar() {
                   key={href}
                   href={href}
                   aria-current={isActive ? 'page' : undefined}
-                  className={`relative text-[11px] tracking-[0.08em] uppercase transition-colors hover:text-gold gold-underline py-1 ${
+                  className={`relative text-xs sm:text-[13px] tracking-[0.06em] uppercase transition-colors hover:text-gold gold-underline py-1 ${
                     isActive ? 'text-gold font-medium' : 'text-foreground/75'
                   }`}
                 >

@@ -53,7 +53,7 @@ export default function ProductCard({ product }: { product: Product }) {
           </motion.div>
         </Link>
         {product.badge && (
-          <span className="pointer-events-none absolute top-3 left-3 bg-background/90 backdrop-blur-md border border-gold/30 px-2.5 py-1 text-[8px] sm:text-[9px] tracking-[0.14em] uppercase text-gold font-medium rounded-sm shadow-sm">
+          <span className="pointer-events-none absolute top-3 left-3 bg-background/90 backdrop-blur-md border border-gold/30 px-2.5 py-1 text-[10px] sm:text-xs tracking-[0.12em] uppercase text-gold font-medium rounded-sm shadow-sm">
             ✦ {product.badge}
           </span>
         )}
@@ -103,16 +103,16 @@ export default function ProductCard({ product }: { product: Product }) {
           </motion.h3>
         </Link>
         <div className="flex items-center gap-2 text-xs">
-          <span className="font-medium text-gold">{formatPrice(product.price)}</span>
+          <span className="text-sm sm:text-base font-medium text-gold font-serif">{formatPrice(product.price)}</span>
           {product.originalPrice && (
-            <span className="text-[10px] line-through text-muted-foreground">{formatPrice(product.originalPrice)}</span>
+            <span className="text-xs line-through text-muted-foreground">{formatPrice(product.originalPrice)}</span>
           )}
         </div>
       </div>
-      <p className="mt-1.5 mb-4 text-[11px] leading-relaxed text-muted-foreground">{product.tagline}</p>
+      <p className="mt-1.5 mb-4 text-xs sm:text-sm leading-relaxed text-muted-foreground">{product.tagline}</p>
       {product.available ? (
         <InstagramOrderLink
-          className="mt-auto inline-flex min-h-11 items-center justify-center gap-1.5 sm:gap-2 border-t border-border/80 pt-3 text-[10px] sm:text-xs text-foreground/80 hover:text-gold transition-colors gold-underline"
+          className="mt-auto inline-flex min-h-11 items-center justify-center gap-1.5 sm:gap-2 border-t border-border/80 pt-3 text-xs sm:text-sm text-foreground/80 hover:text-gold transition-colors gold-underline"
           label={`Order ${product.name} on Instagram`}
         />
       ) : (

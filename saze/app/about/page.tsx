@@ -65,13 +65,13 @@ export default function AboutPage() {
             </nav>
 
             <p
-              className="text-xs text-gold uppercase tracking-[0.2em] mb-3"
+              className="text-sm text-gold uppercase tracking-[0.16em] mb-3"
               style={{ fontFamily: 'var(--font-jost)' }}
             >
               ✦ Our Story
             </p>
             <h1
-              className="text-5xl sm:text-6xl md:text-7xl font-light leading-none mb-6 text-balance"
+              className="text-4xl sm:text-5xl md:text-6xl font-light leading-[1.05] mb-6 text-balance"
               style={{ fontFamily: 'var(--font-cormorant), serif' }}
             >
               Because Details<br />
@@ -92,13 +92,13 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
               <p
-                className="text-xs text-gold uppercase tracking-[0.2em] mb-4"
+                className="text-sm text-gold uppercase tracking-[0.16em] mb-4"
                 style={{ fontFamily: 'var(--font-jost)' }}
               >
                 ✦ The Beginning
               </p>
               <h2
-                className="text-4xl md:text-5xl font-light leading-tight mb-6"
+                className="text-3xl md:text-4xl font-light leading-tight mb-5"
                 style={{ fontFamily: 'var(--font-cormorant), serif' }}
               >
                 Started with a love for
@@ -170,7 +170,7 @@ export default function AboutPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-14">
               <p
-                className="text-xs text-gold uppercase tracking-[0.2em] mb-3"
+                className="text-sm text-gold uppercase tracking-[0.16em] mb-3"
                 style={{ fontFamily: 'var(--font-jost)' }}
               >
                 ✦ What We Stand For
@@ -211,13 +211,13 @@ export default function AboutPage() {
         {/* CTA */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28 text-center">
           <p
-            className="text-xs text-gold uppercase tracking-[0.2em] mb-4"
+            className="text-sm text-gold uppercase tracking-[0.16em] mb-4"
             style={{ fontFamily: 'var(--font-jost)' }}
           >
             ✦ Ready to Wear Art?
           </p>
           <h2
-            className="text-4xl md:text-5xl font-light leading-tight mb-6 text-balance"
+            className="text-3xl md:text-4xl font-light leading-tight mb-5 text-balance"
             style={{ fontFamily: 'var(--font-cormorant), serif' }}
           >
             Explore the full

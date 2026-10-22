@@ -38,7 +38,7 @@ export default function CartClient() {
         <h1 className="display-heading mb-5">
           Your next nail <em className="text-gold italic">crush awaits.</em>
         </h1>
-        <p className="text-sm text-muted-foreground mb-8 max-w-sm leading-relaxed">
+        <p className="text-base text-muted-foreground mb-8 max-w-sm leading-relaxed">
           Your cart is empty. Find a set you love and tap + to keep all your favourites together.
         </p>
         <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
@@ -52,7 +52,7 @@ export default function CartClient() {
 
   return (
     <div className="section-shell py-12 md:py-16">
-      <nav aria-label="Breadcrumb" className="flex gap-2 text-xs text-muted-foreground mb-7">
+      <nav aria-label="Breadcrumb" className="flex items-center gap-2.5 text-sm sm:text-base text-muted-foreground mb-7">
         <Link href="/" className="hover:text-gold transition-colors">Home</Link>
         <span>/</span>
         <span className="text-foreground font-medium">Cart</span>
@@ -86,9 +86,9 @@ export default function CartClient() {
                     <Link href={`/shop/${product.id}`}>
                       <h2 className="font-serif text-2xl hover:text-gold transition-colors">{product.name}</h2>
                     </Link>
-                    <span className="text-sm font-medium text-gold">{formatPrice(product.price * quantity)}</span>
+                    <span className="text-base sm:text-lg font-medium text-gold font-serif">{formatPrice(product.price * quantity)}</span>
                   </div>
-                  <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{product.tagline}</p>
+                  <p className="text-sm text-muted-foreground mt-1 leading-relaxed">{product.tagline}</p>
                   <div className="flex items-center justify-between gap-2 mt-4">
                     <div className="inline-flex items-center border border-border rounded-sm bg-card/40">
                       <button
@@ -99,7 +99,7 @@ export default function CartClient() {
                       >
                         <Minus size={13} />
                       </button>
-                      <span className="min-w-7 text-center text-xs font-medium" aria-label={`Quantity ${quantity}`}>{quantity}</span>
+                      <span className="min-w-8 text-center text-sm font-medium" aria-label={`Quantity ${quantity}`}>{quantity}</span>
                       <button
                         type="button"
                         onClick={() => updateQty(product.id, quantity + 1)}
@@ -112,7 +112,7 @@ export default function CartClient() {
                     <button
                       type="button"
                       onClick={() => removeItem(product.id)}
-                      className="inline-flex items-center gap-1.5 text-[11px] text-muted-foreground hover:text-red-400 transition-colors min-h-10"
+                      className="inline-flex items-center gap-1.5 text-xs sm:text-sm text-muted-foreground hover:text-red-400 transition-colors min-h-10"
                       aria-label={`Remove ${product.name}`}
                     >
                       <Trash2 size={13} />
@@ -124,7 +124,7 @@ export default function CartClient() {
             ))}
           </AnimatePresence>
 
-          <Link href="/shop" className="inline-flex gap-2 items-center mt-4 text-xs border-b border-gold pb-1 gold-underline">
+          <Link href="/shop" className="inline-flex gap-2 items-center mt-4 text-sm border-b border-gold pb-1 gold-underline">
             A little more browsing <ArrowRight size={14} />
           </Link>
         </div>
@@ -132,18 +132,18 @@ export default function CartClient() {
         {/* Order Summary Sidebar */}
         <aside className="bg-card/70 backdrop-blur-md p-6 sm:p-8 self-start lg:sticky lg:top-32 border border-border/80 rounded-2xl shadow-xl">
           <h2 className="font-serif text-3xl mb-6">Order summary</h2>
-          <div className="space-y-3.5 text-xs mb-6">
+          <div className="space-y-3.5 text-sm mb-6">
             <div className="flex justify-between items-center">
               <span className="text-muted-foreground">Items</span>
               <span className="font-medium text-foreground">{totalItems}</span>
             </div>
             <div className="flex justify-between items-center">
               <span className="text-muted-foreground">Subtotal</span>
-              <span className="text-sm font-medium text-gold font-serif">{formatPrice(subtotal)}</span>
+              <span className="text-base sm:text-lg font-medium text-gold font-serif">{formatPrice(subtotal)}</span>
             </div>
             <div className="flex justify-between items-center">
               <span className="text-muted-foreground">Shipping</span>
-              <span className="text-xs text-muted-foreground">Calculated at checkout</span>
+              <span className="text-xs sm:text-sm text-muted-foreground">Calculated at checkout</span>
             </div>
           </div>
 
@@ -153,11 +153,11 @@ export default function CartClient() {
               onClick={() => setIsModalOpen(true)}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="button-primary w-full min-h-[50px] rounded-full shadow-lg text-sm font-medium tracking-wide"
+              className="button-primary w-full min-h-[50px] rounded-full shadow-lg text-base font-medium tracking-wide"
             >
               Order on Instagram
             </motion.button>
-            <p className="text-center text-[11px] text-muted-foreground mt-3 leading-relaxed">
+            <p className="text-center text-xs sm:text-sm text-muted-foreground mt-3 leading-relaxed">
               We&apos;ll walk you through sending your order to{' '}
               <span className="text-gold font-medium">@{INSTAGRAM_USERNAME}</span>.
             </p>
@@ -166,7 +166,7 @@ export default function CartClient() {
           <button
             type="button"
             onClick={clearCart}
-            className="w-full text-[11px] text-muted-foreground hover:text-foreground transition-colors py-2 text-center"
+            className="w-full text-xs sm:text-sm text-muted-foreground hover:text-foreground transition-colors py-2 text-center"
           >
             Clear cart
           </button>

@@ -50,7 +50,7 @@ export default function WhySection() {
             More than nails.<br />
             <em className="text-gold italic">A feeling.</em>
           </h2>
-          <p className="text-sm text-muted-foreground leading-relaxed mb-8 max-w-md">
+          <p className="text-base text-muted-foreground leading-relaxed mb-8 max-w-md">
             That fresh-set confidence. That &ldquo;where did you get those?&rdquo; moment. We&apos;re here for the tiny things that make your day feel a little more you.
           </p>
           <div className="space-y-6">
@@ -66,13 +66,13 @@ export default function WhySection() {
                 </div>
                 <div>
                   <h3 className="font-serif text-2xl mb-1 text-foreground group-hover:text-gold transition-colors">{title}</h3>
-                  <p className="text-xs leading-relaxed text-muted-foreground max-w-sm">{desc}</p>
+                  <p className="text-sm leading-relaxed text-muted-foreground max-w-sm">{desc}</p>
                 </div>
               </motion.div>
             ))}
           </div>
           <motion.div whileHover={{ x: 3 }} className="inline-block mt-9">
-            <Link href="/about" className="inline-flex items-center gap-2 border-b border-gold pb-1 text-xs text-gold gold-underline">
+            <Link href="/about" className="inline-flex items-center gap-2 border-b border-gold pb-1 text-sm text-gold gold-underline">
               Meet SAZÉ <ArrowUpRight size={16} />
             </Link>
           </motion.div>

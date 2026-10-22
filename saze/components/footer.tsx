@@ -16,13 +16,13 @@ export default function Footer() {
               SAZ<span className="text-gold">É</span>
             </Link>
             <p className="mt-3 font-serif text-2xl italic text-gold">Because details matter.</p>
-            <p className="text-xs text-muted-foreground max-w-xs leading-relaxed mt-4 mb-6">
+            <p className="text-sm text-muted-foreground max-w-xs leading-relaxed mt-4 mb-6">
               Handcrafted press-on nails and little finishing pieces for your everyday and your unforgettable. From Goa, with a little extra glam.
             </p>
             <motion.a
               href={INSTAGRAM_URL}
               whileHover={{ x: 3 }}
-              className="inline-flex items-center gap-2 text-xs text-foreground hover:text-gold transition-colors gold-underline"
+              className="inline-flex items-center gap-2 text-sm text-foreground hover:text-gold transition-colors gold-underline"
             >
               <InstagramIcon size={17} /> @{INSTAGRAM_USERNAME} <ArrowUpRight size={14} />
             </motion.a>
@@ -38,7 +38,7 @@ export default function Footer() {
                 { href: '/shop?category=necklaces', label: 'Necklaces' },
               ].map(({ href, label }) => (
                 <li key={href}>
-                  <Link href={href} className="text-xs text-muted-foreground hover:text-gold transition-colors gold-underline inline-block">
+                  <Link href={href} className="text-sm text-muted-foreground hover:text-gold transition-colors gold-underline inline-block">
                     {label}
                   </Link>
                 </li>
@@ -54,7 +54,7 @@ export default function Footer() {
                 { href: '/cart', label: 'Your cart' },
               ].map(({ href, label }) => (
                 <li key={href}>
-                  <Link href={href} className="text-xs text-muted-foreground hover:text-gold transition-colors gold-underline inline-block">
+                  <Link href={href} className="text-sm text-muted-foreground hover:text-gold transition-colors gold-underline inline-block">
                     {label}
                   </Link>
                 </li>
@@ -63,18 +63,18 @@ export default function Footer() {
                 <motion.a
                   href={INSTAGRAM_URL}
                   whileHover={{ x: 2 }}
-                  className="text-xs text-gold inline-flex gap-1 items-center hover:text-cream transition-colors"
+                  className="text-sm text-gold inline-flex gap-1 items-center hover:text-cream transition-colors"
                 >
                   Order on Instagram <ArrowUpRight size={13} />
                 </motion.a>
               </li>
             </ul>
-            <p className="text-[10px] text-muted-foreground mt-6 uppercase tracking-widest">
+            <p className="text-xs text-muted-foreground mt-6 uppercase tracking-widest">
               Goa, India · Shipping nationwide
             </p>
           </div>
         </div>
-        <div className="border-t border-border pt-6 flex flex-col sm:flex-row gap-3 justify-between text-[10px] text-muted-foreground">
+        <div className="border-t border-border pt-6 flex flex-col sm:flex-row gap-3 justify-between text-xs text-muted-foreground">
           <p>&copy; {new Date().getFullYear()} SAZÉ. All the little details reserved.</p>
           <p className="text-gold/80">Small-batch nails. Big main-character energy.</p>
         </div>

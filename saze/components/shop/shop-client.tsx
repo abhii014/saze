@@ -69,7 +69,7 @@ export default function ShopClient() {
               aria-pressed={isSelected}
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.96 }}
-              className={`px-5 min-h-11 rounded-full border text-xs transition-colors ${
+              className={`px-5 min-h-11 rounded-full border text-sm transition-colors ${
                 isSelected
                   ? 'bg-foreground text-background border-foreground shadow-md font-medium'
                   : 'border-border text-muted-foreground hover:border-foreground hover:text-foreground'
@@ -91,16 +91,16 @@ export default function ShopClient() {
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder="Find your next crush…"
-            className="w-full bg-card/50 border border-border rounded-sm pl-10 pr-4 py-3 text-xs focus:outline-none focus:border-gold transition-colors"
+            className="w-full bg-card/50 border border-border rounded-sm pl-10 pr-4 py-3 text-sm focus:outline-none focus:border-gold transition-colors"
           />
         </div>
         <div className="flex items-center gap-3">
-          <label htmlFor="sort-select" className="text-xs text-muted-foreground">Sort by</label>
+          <label htmlFor="sort-select" className="text-sm text-muted-foreground">Sort by</label>
           <select
             id="sort-select"
             value={sort}
             onChange={(event) => setSort(event.target.value)}
-            className="border border-border bg-card/50 rounded-sm px-3 py-3 text-xs focus:outline-none focus:border-gold transition-colors cursor-pointer"
+            className="border border-border bg-card/50 rounded-sm px-3 py-3 text-sm focus:outline-none focus:border-gold transition-colors cursor-pointer"
           >
             {sortOptions.map(({ value, label }) => (
               <option key={value} value={value}>{label}</option>

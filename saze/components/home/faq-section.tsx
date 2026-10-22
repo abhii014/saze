@@ -22,7 +22,7 @@ export default function FaqSection() {
           <h2 className="display-heading mb-5">
             Good to <em className="text-gold italic">know.</em>
           </h2>
-          <p className="text-xs leading-relaxed text-muted-foreground max-w-xs">
+          <p className="text-sm leading-relaxed text-muted-foreground max-w-xs">
             Still curious about something?{' '}
             <motion.a
               href={INSTAGRAM_URL}
@@ -36,13 +36,13 @@ export default function FaqSection() {
         <div>
           {questions.map(({ question, answer }) => (
             <details key={question} className="faq-item border-b border-border group py-1" name="saze-faq">
-              <summary className="flex items-center justify-between gap-5 py-5 text-sm font-medium hover:text-gold transition-colors cursor-pointer list-none">
+              <summary className="flex items-center justify-between gap-5 py-5 text-base font-medium hover:text-gold transition-colors cursor-pointer list-none">
                 <span>{question}</span>
                 <span className="p-1 rounded-full bg-border/40 group-hover:bg-gold/15 group-hover:text-gold transition-colors shrink-0">
                   <Plus size={16} className="faq-plus transition-transform duration-300" aria-hidden="true" />
                 </span>
               </summary>
-              <p className="text-xs leading-relaxed text-muted-foreground pb-5 pr-7 animate-fadeIn">
+              <p className="text-sm leading-relaxed text-muted-foreground pb-5 pr-7 animate-fadeIn">
                 {answer}
               </p>
             </details>
