@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { Search, ArrowRight } from 'lucide-react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
-import { products, categories, type Category, type Product } from '@/lib/products'
+import { products, categories as initialCategories, type Product } from '@/lib/products'
 import ProductCard from '@/components/product-card'
 
 const sortOptions = [
@@ -19,7 +19,8 @@ export default function ShopClient() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const categoryParam = searchParams.get('category')
-  const selectedCategory: Category = categories.find((category) => category.value === categoryParam)?.value ?? 'all'
+  const [categoriesList, setCategoriesList] = useState<Array<{ value: string; label: string }>>(initialCategories)
+  const selectedCategory = categoriesList.find((category) => category.value === categoryParam)?.value ?? 'all'
   const [sort, setSort] = useState('featured')
   const [query, setQuery] = useState('')
   const [catalog, setCatalog] = useState<Product[]>(products)
@@ -33,9 +34,18 @@ export default function ShopClient() {
         }
       })
       .catch(() => {})
+
+    fetch('/api/categories')
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setCategoriesList(data)
+        }
+      })
+      .catch(() => {})
   }, [])
 
-  function selectCategory(category: Category) {
+  function selectCategory(category: string) {
     const params = new URLSearchParams(searchParams.toString())
     if (category === 'all') params.delete('category')
     else params.set('category', category)
@@ -59,7 +69,7 @@ export default function ShopClient() {
   return (
     <>
       <div className="flex flex-wrap gap-2 mb-7" role="group" aria-label="Product categories">
-        {categories.map(({ value, label }) => {
+        {categoriesList.map(({ value, label }) => {
           const isSelected = selectedCategory === value
           return (
             <motion.button

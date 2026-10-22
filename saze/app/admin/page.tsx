@@ -20,10 +20,12 @@ import {
   LogOut,
   RefreshCw,
   Package,
+  Tag,
 } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { Product, Category } from '@/lib/products'
 import { formatPrice } from '@/lib/products'
+import { initialCategories, type CategoryItem } from '@/lib/catalog-store'
 
 export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null)
@@ -39,6 +41,13 @@ export default function AdminPage() {
   const [search, setSearch] = useState('')
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
   const [stockFilter, setStockFilter] = useState<'all' | 'instock' | 'outofstock'>('all')
+
+  // Category management state
+  const [categories, setCategories] = useState<CategoryItem[]>(initialCategories)
+  const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false)
+  const [newCategoryLabel, setNewCategoryLabel] = useState('')
+  const [categorySaving, setCategorySaving] = useState(false)
+  const [categoryError, setCategoryError] = useState('')
 
   // Edit/Add modal state
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -68,6 +77,12 @@ export default function AdminPage() {
         if (res.ok) {
           const data = await res.json()
           setProducts(data)
+          fetch('/api/admin/categories')
+            .then((r) => (r.ok ? r.json() : null))
+            .then((cats) => {
+              if (Array.isArray(cats) && cats.length > 0) setCategories(cats)
+            })
+            .catch(() => {})
           setIsAuthenticated(true)
         } else {
           setIsAuthenticated(false)
@@ -98,6 +113,12 @@ export default function AdminPage() {
         if (prodRes.ok) {
           const data = await prodRes.json()
           setProducts(data)
+          fetch('/api/admin/categories')
+            .then((r) => (r.ok ? r.json() : null))
+            .then((cats) => {
+              if (Array.isArray(cats) && cats.length > 0) setCategories(cats)
+            })
+            .catch(() => {})
         }
       } else {
         setLoginError('Incorrect password. Please try again.')
@@ -154,7 +175,7 @@ export default function AdminPage() {
       id: `set-${Date.now().toString().slice(-6)}`,
       name: '',
       tagline: '',
-      category: 'everyday',
+      category: categories.find((c) => c.value !== 'all')?.value || 'everyday',
       price: 399,
       originalPrice: 599,
       image: '/images/products/IMG-20261012-WA0050.jpg',
@@ -245,6 +266,77 @@ export default function AdminPage() {
   function showStatus(msg: string) {
     setStatusMessage(msg)
     setTimeout(() => setStatusMessage(''), 4000)
+  }
+
+  // Category management handlers
+  async function handleAddCategory(e: React.FormEvent) {
+    e.preventDefault()
+    if (!newCategoryLabel.trim()) return
+    setCategorySaving(true)
+    setCategoryError('')
+
+    try {
+      const res = await fetch('/api/admin/categories', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'add',
+          payload: { label: newCategoryLabel.trim() },
+        }),
+      })
+
+      const data = await res.json()
+      if (res.ok && data.categories) {
+        setCategories(data.categories)
+        setNewCategoryLabel('')
+        showStatus(`Category "${newCategoryLabel.trim()}" added!`)
+      } else {
+        setCategoryError(data.error || 'Failed to add category')
+      }
+    } catch {
+      setCategoryError('Failed to add category. Please try again.')
+    } finally {
+      setCategorySaving(false)
+    }
+  }
+
+  async function handleDeleteCategory(value: string, label: string) {
+    if (value === 'all') return
+    const count = products.filter((p) => p.category === value).length
+    const warning =
+      count > 0
+        ? `"${label}" currently has ${count} product(s). Deleting it will keep the products but remove this category filter. Delete category?`
+        : `Are you sure you want to delete the category "${label}"?`
+
+    if (!confirm(warning)) return
+    setCategorySaving(true)
+    setCategoryError('')
+
+    try {
+      const res = await fetch('/api/admin/categories', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'delete',
+          payload: { value },
+        }),
+      })
+
+      const data = await res.json()
+      if (res.ok && data.categories) {
+        setCategories(data.categories)
+        if (selectedCategory === value) {
+          setSelectedCategory('all')
+        }
+        showStatus(`Category "${label}" deleted`)
+      } else {
+        setCategoryError(data.error || 'Failed to delete category')
+      }
+    } catch {
+      setCategoryError('Failed to delete category. Please try again.')
+    } finally {
+      setCategorySaving(false)
+    }
   }
 
   // Filter products
@@ -504,14 +596,8 @@ export default function AdminPage() {
 
           {/* Filter Pills */}
           <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-border/50 text-xs">
-            <div className="flex flex-wrap gap-1.5">
-              {[
-                { value: 'all', label: 'All' },
-                { value: 'everyday', label: 'Everyday' },
-                { value: 'bridal', label: 'Bridal' },
-                { value: 'festive', label: 'Festive' },
-                { value: 'necklaces', label: 'Necklaces' },
-              ].map(({ value, label }) => (
+            <div className="flex flex-wrap items-center gap-1.5">
+              {categories.map(({ value, label }) => (
                 <button
                   type="button"
                   key={value}
@@ -525,6 +611,19 @@ export default function AdminPage() {
                   {label}
                 </button>
               ))}
+
+              <button
+                type="button"
+                onClick={() => {
+                  setCategoryError('')
+                  setIsCategoryModalOpen(true)
+                }}
+                className="px-3 py-1.5 rounded-full text-xs border border-gold/40 text-gold hover:bg-gold/10 transition-colors flex items-center gap-1.5 ml-1"
+                title="Manage categories"
+              >
+                <Tag size={12} />
+                <span>Manage Categories</span>
+              </button>
             </div>
 
             <div className="flex items-center gap-1.5">
@@ -543,6 +642,8 @@ export default function AdminPage() {
                   {filter === 'all' ? 'All' : filter === 'instock' ? 'In Stock' : 'Out of Stock'}
                 </button>
               ))}
+
+              
             </div>
           </div>
         </div>
@@ -749,16 +850,31 @@ export default function AdminPage() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-muted-foreground font-medium mb-1">Category</label>
+                    <div className="flex items-center justify-between mb-1">
+                      <label className="block text-muted-foreground font-medium">Category</label>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setCategoryError('')
+                          setIsCategoryModalOpen(true)
+                        }}
+                        className="text-[11px] text-gold hover:underline flex items-center gap-1"
+                      >
+                        <Plus size={11} /> New Category
+                      </button>
+                    </div>
                     <select
-                      value={formData.category || 'everyday'}
-                      onChange={(e) => setFormData({ ...formData, category: e.target.value as any })}
+                      value={formData.category || (categories.find(c => c.value !== 'all')?.value ?? 'everyday')}
+                      onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                       className="w-full bg-background border border-border rounded-xl px-3.5 py-2.5 text-xs text-foreground focus:outline-none focus:border-gold cursor-pointer"
                     >
-                      <option value="everyday">Everyday muse</option>
-                      <option value="bridal">Bridal glow</option>
-                      <option value="festive">After dark / Festive</option>
-                      <option value="necklaces">Necklaces</option>
+                      {categories
+                        .filter((c) => c.value !== 'all')
+                        .map((c) => (
+                          <option key={c.value} value={c.value}>
+                            {c.label}
+                          </option>
+                        ))}
                     </select>
                   </div>
                   <div>
@@ -836,6 +952,137 @@ export default function AdminPage() {
                   </button>
                 </div>
               </form>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Category Manager Modal */}
+      <AnimatePresence>
+        {isCategoryModalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 15 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 15 }}
+              transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] as const }}
+              className="w-full max-w-lg bg-[#141b2d] border border-gold/30 rounded-3xl p-6 sm:p-8 shadow-2xl relative max-h-[90vh] flex flex-col"
+              style={{ fontFamily: 'var(--font-jost)' }}
+            >
+              <div className="flex items-center justify-between pb-4 border-b border-border/80">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-9 h-9 rounded-full bg-gold/15 border border-gold/40 flex items-center justify-center text-gold">
+                    <Tag size={18} />
+                  </div>
+                  <div>
+                    <h2 className="font-serif text-xl sm:text-2xl text-foreground font-normal">
+                      Manage Categories
+                    </h2>
+                    <p className="text-[11px] text-muted-foreground">
+                      Add new categories or delete existing ones
+                    </p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setIsCategoryModalOpen(false)}
+                  className="w-8 h-8 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
+                  aria-label="Close"
+                >
+                  <X size={16} />
+                </button>
+              </div>
+
+              {/* Add New Category Form */}
+              <form onSubmit={handleAddCategory} className="py-4 border-b border-border/60">
+                <label className="block text-xs font-medium text-foreground mb-1.5">
+                  Add New Category
+                </label>
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={newCategoryLabel}
+                    onChange={(e) => {
+                      setNewCategoryLabel(e.target.value)
+                      setCategoryError('')
+                    }}
+                    placeholder="e.g. Rings, Luxury Sets, Summer Glow"
+                    required
+                    className="flex-1 bg-background border border-border rounded-xl px-3.5 py-2.5 text-xs text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-gold transition-colors"
+                  />
+                  <button
+                    type="submit"
+                    disabled={categorySaving || !newCategoryLabel.trim()}
+                    className="button-primary px-4 rounded-xl text-xs font-medium flex items-center gap-1.5 whitespace-nowrap shadow-md shadow-gold/20"
+                  >
+                    <Plus size={14} />
+                    <span>{categorySaving ? 'Adding…' : 'Add'}</span>
+                  </button>
+                </div>
+                {categoryError && (
+                  <p className="text-[11px] text-red-400 mt-2 bg-red-950/40 border border-red-800/40 rounded-lg p-2">
+                    {categoryError}
+                  </p>
+                )}
+              </form>
+
+              {/* Existing Categories List */}
+              <div className="flex-1 overflow-y-auto py-4 space-y-2">
+                <p className="text-[11px] uppercase tracking-wider text-muted-foreground mb-2">
+                  Active Categories ({categories.length})
+                </p>
+                {categories.map((cat) => {
+                  const productCount = products.filter((p) => p.category === cat.value).length
+                  const isAll = cat.value === 'all'
+
+                  return (
+                    <div
+                      key={cat.value}
+                      className="flex items-center justify-between p-3 rounded-xl bg-card/60 border border-border/70 hover:border-border transition-colors"
+                    >
+                      <div className="flex items-center gap-3">
+                        <span className="w-2 h-2 rounded-full bg-gold/70" />
+                        <div>
+                          <p className="text-xs font-medium text-foreground">
+                            {cat.label}
+                            {isAll && (
+                              <span className="ml-2 text-[10px] text-muted-foreground font-normal bg-background/80 px-2 py-0.5 rounded-full border border-border">
+                                Default (All Products)
+                              </span>
+                            )}
+                          </p>
+                          <p className="text-[10px] text-muted-foreground font-mono">
+                            slug: {cat.value} {!isAll && `• ${productCount} set${productCount === 1 ? '' : 's'}`}
+                          </p>
+                        </div>
+                      </div>
+
+                      {!isAll && (
+                        <button
+                          type="button"
+                          onClick={() => handleDeleteCategory(cat.value, cat.label)}
+                          disabled={categorySaving}
+                          title={`Delete category "${cat.label}"`}
+                          className="w-8 h-8 rounded-lg border border-red-900/40 bg-red-950/20 text-red-400 hover:bg-red-900/40 flex items-center justify-center transition-colors"
+                        >
+                          <Trash2 size={14} />
+                        </button>
+                      )}
+                    </div>
+                  )
+                })}
+              </div>
+
+              {/* Modal Footer */}
+              <div className="pt-4 border-t border-border/80 flex justify-end">
+                <button
+                  type="button"
+                  onClick={() => setIsCategoryModalOpen(false)}
+                  className="button-outline min-h-[40px] px-6 rounded-xl text-xs"
+                >
+                  Done
+                </button>
+              </div>
             </motion.div>
           </div>
         )}

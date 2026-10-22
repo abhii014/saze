@@ -2,7 +2,7 @@
 // PRODUCTS DATA — Edit this file to add/update products
 // ============================================================
 
-export type Category = 'all' | 'everyday' | 'bridal' | 'festive' | 'necklaces' | 'custom'
+export type Category = 'all' | 'everyday' | 'bridal' | 'festive' | 'necklaces' | 'custom' | (string & {})
 
 export interface Product {
   id: string
@@ -10,7 +10,7 @@ export interface Product {
   tagline: string
   price: number
   originalPrice?: number
-  category: Exclude<Category, 'all'>
+  category: string
   image: string
   images?: string[]
   badge?: 'bestseller' | 'new' | 'limited'
@@ -400,7 +400,7 @@ export const categories: { value: Category; label: string }[] = [
   { value: 'custom', label: 'Custom' },
 ]
 
-export function getCategoryLabel(category: Exclude<Category, 'all'>): string {
+export function getCategoryLabel(category: string): string {
   return categories.find((item) => item.value === category)?.label ?? category
 }
 

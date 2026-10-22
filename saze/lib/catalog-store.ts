@@ -1,8 +1,22 @@
 import initialProducts from '@/lib/products.json'
 import type { Product } from '@/lib/products'
 
+export interface CategoryItem {
+  value: string
+  label: string
+}
+
+export const initialCategories: CategoryItem[] = [
+  { value: 'all', label: 'All' },
+  { value: 'everyday', label: 'Everyday' },
+  { value: 'bridal', label: 'Bridal' },
+  { value: 'festive', label: 'Festive' },
+  { value: 'necklaces', label: 'Necklaces' },
+]
+
 // In-memory runtime cache for serverless instance lifetime
 let runtimeCatalog: Product[] | null = null
+let runtimeCategories: CategoryItem[] | null = null
 
 export function getRuntimeCatalog(): Product[] {
   if (runtimeCatalog && runtimeCatalog.length > 0) {
@@ -13,6 +27,17 @@ export function getRuntimeCatalog(): Product[] {
 
 export function setRuntimeCatalog(products: Product[]) {
   runtimeCatalog = products
+}
+
+export function getRuntimeCategories(): CategoryItem[] {
+  if (runtimeCategories && runtimeCategories.length > 0) {
+    return runtimeCategories
+  }
+  return initialCategories
+}
+
+export function setRuntimeCategories(categories: CategoryItem[]) {
+  runtimeCategories = categories
 }
 
 export async function fetchCatalog(): Promise<Product[]> {
@@ -43,6 +68,56 @@ export async function fetchCatalog(): Promise<Product[]> {
 
   // 2. Return current runtime cache or initial products
   return getRuntimeCatalog()
+}
+
+export async function fetchCategories(): Promise<CategoryItem[]> {
+  const kvUrl = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL
+  const kvToken = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN
+
+  if (kvUrl && kvToken) {
+    try {
+      const res = await fetch(`${kvUrl}/get/saze_categories`, {
+        headers: { Authorization: `Bearer ${kvToken}` },
+        cache: 'no-store',
+      })
+      if (res.ok) {
+        const data = await res.json()
+        if (data && data.result) {
+          const parsed = typeof data.result === 'string' ? JSON.parse(data.result) : data.result
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            setRuntimeCategories(parsed)
+            return parsed
+          }
+        }
+      }
+    } catch (e) {
+      console.error('KV categories fetch error, falling back:', e)
+    }
+  }
+
+  return getRuntimeCategories()
+}
+
+export async function persistCategories(categories: CategoryItem[]): Promise<void> {
+  setRuntimeCategories(categories)
+
+  const kvUrl = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL
+  const kvToken = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN
+
+  if (kvUrl && kvToken) {
+    try {
+      await fetch(`${kvUrl}/set/saze_categories`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${kvToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(categories),
+      })
+    } catch (e) {
+      console.error('Error saving categories to KV:', e)
+    }
+  }
 }
 
 export async function persistToCloud(products: Product[]): Promise<void> {
