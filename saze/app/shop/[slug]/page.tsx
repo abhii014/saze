@@ -1,5 +1,4 @@
 import { notFound } from 'next/navigation'
-import Navbar from '@/components/navbar'
 import Footer from '@/components/footer'
 import ProductDetailClient from '@/components/shop/product-detail-client'
 import { products, getProductById } from '@/lib/products'
@@ -34,8 +33,7 @@ export default async function ProductPage({
 
   return (
     <>
-      <Navbar />
-      <main id="main-content" className="pt-28 light-section pb-12">
+            <main id="main-content" className="pt-28 light-section pb-12">
         <ProductDetailClient product={product} />
       </main>
       <Footer />

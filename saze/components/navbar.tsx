@@ -40,6 +40,10 @@ export default function Navbar() {
   const toggleRef = useRef<HTMLButtonElement>(null)
   const pathname = usePathname()
 
+  if (pathname?.startsWith('/admin')) {
+    return null
+  }
+
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20)
     onScroll()
@@ -95,15 +99,8 @@ export default function Navbar() {
       <a href="#main-content" className="sr-only focus:not-sr-only fixed left-4 top-4 z-[100] bg-cream text-navy px-4 py-3">
         Skip to content
       </a>
-      <motion.header
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as const }}
-        className={`fixed inset-x-0 top-0 z-50 border-b transition-all duration-500 ${
-          scrolled || mobileOpen
-            ? 'border-border bg-background/80 nav-blur shadow-[0_4px_30px_rgba(0,0,0,0.25)]'
-            : 'border-cream/10 bg-background/60 nav-blur'
-        }`}
+      <header
+        className="fixed inset-x-0 top-0 z-50 border-b border-border bg-[#101526]/85 backdrop-blur-xl nav-blur shadow-[0_4px_30px_rgba(0,0,0,0.25)]"
       >
         <div className="border-b border-cream/10 py-2 text-center text-[9px] sm:text-[10px] tracking-[0.18em] uppercase text-gold">
           <motion.span
@@ -190,7 +187,7 @@ export default function Navbar() {
             </button>
           </div>
         </div>
-      </motion.header>
+      </header>
 
       <AnimatePresence>
         {mobileOpen && (

@@ -1,4 +1,3 @@
-import Navbar from '@/components/navbar'
 import Footer from '@/components/footer'
 import ShopClient from '@/components/shop/shop-client'
 import { Suspense } from 'react'
@@ -12,8 +11,7 @@ export const metadata = {
 export default function ShopPage() {
   return (
     <>
-      <Navbar />
-      <main id="main-content" className="pt-28 light-section pb-20">
+            <main id="main-content" className="pt-28 light-section pb-20">
         <div className="section-shell py-12 md:py-16">
           {/* Header */}
           <div className="mb-10">

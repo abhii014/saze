@@ -2,7 +2,6 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight, MapPin, Sparkles, Heart, Package } from 'lucide-react'
 import InstagramIcon from '@/components/icons/instagram-icon'
-import Navbar from '@/components/navbar'
 import Footer from '@/components/footer'
 import type { Metadata } from 'next'
 import { INSTAGRAM_URL, INSTAGRAM_USERNAME } from '@/lib/instagram'
@@ -39,8 +38,7 @@ const values = [
 export default function AboutPage() {
   return (
     <>
-      <Navbar />
-      <main id="main-content" className="pt-28">
+            <main id="main-content" className="pt-28">
         {/* Hero */}
         <section className="relative overflow-hidden">
           <div className="absolute inset-0 z-0">

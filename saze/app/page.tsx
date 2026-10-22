@@ -1,4 +1,3 @@
-import Navbar from '@/components/navbar'
 import Footer from '@/components/footer'
 import HeroSection from '@/components/home/hero-section'
 import FeaturedSection from '@/components/home/featured-section'
@@ -12,8 +11,7 @@ import FaqSection from '@/components/home/faq-section'
 export default function HomePage() {
   return (
     <>
-      <Navbar />
-      <main id="main-content">
+            <main id="main-content">
         <HeroSection />
         <MarqueeSection />
         <FeaturedSection />

@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { Cormorant_Garamond, Jost } from 'next/font/google'
 import Providers from '@/components/providers'
+import Navbar from '@/components/navbar'
 import './globals.css'
 
 const cormorant = Cormorant_Garamond({
@@ -47,7 +48,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${cormorant.variable} ${jost.variable} bg-background`}>
       <body className="antialiased grain-overlay" style={{ fontFamily: 'var(--font-jost), sans-serif' }}>
-        <Providers>{children}</Providers>
+        <Providers>
+          <Navbar />
+          {children}
+        </Providers>
       </body>
     </html>
   )

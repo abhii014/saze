@@ -4,7 +4,6 @@ import Link from 'next/link'
 import { Sparkles, ArrowRight, Palette, Clock, MessageCircle } from 'lucide-react'
 import { motion } from 'framer-motion'
 import InstagramIcon from '@/components/icons/instagram-icon'
-import Navbar from '@/components/navbar'
 import Footer from '@/components/footer'
 import { INSTAGRAM_URL, INSTAGRAM_USERNAME } from '@/lib/instagram'
 
@@ -49,8 +48,7 @@ export default function CustomOrderPage() {
 
   return (
     <>
-      <Navbar />
-      <main id="main-content" className="pt-28">
+            <main id="main-content" className="pt-28">
         {/* Header */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
           <nav
