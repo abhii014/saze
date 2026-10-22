@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Check, Sparkles, ExternalLink } from 'lucide-react'
+import { X, Check, Sparkles } from 'lucide-react'
 import InstagramIcon from '@/components/icons/instagram-icon'
-import { INSTAGRAM_USERNAME, INSTAGRAM_URL, INSTAGRAM_APP_URL } from '@/lib/instagram'
+import { INSTAGRAM_USERNAME, INSTAGRAM_DM_URL, INSTAGRAM_APP_URL } from '@/lib/instagram'
 
 interface Props {
   isOpen: boolean
@@ -14,7 +14,7 @@ interface Props {
 
 export default function InstagramCheckoutModal({ isOpen, onClose, message }: Props) {
   const [copied, setCopied] = useState(false)
-  const [copiedAction, setCopiedAction] = useState<'app' | 'web' | null>(null)
+  const [copiedAction, setCopiedAction] = useState<'dm' | 'app' | null>(null)
 
   useEffect(() => {
     if (!isOpen) {
@@ -39,7 +39,35 @@ export default function InstagramCheckoutModal({ isOpen, onClose, message }: Pro
     }
   }, [isOpen, onClose])
 
-  async function handleOpenApp() {
+  async function handleOpenDM() {
+    try {
+      await navigator.clipboard.writeText(message)
+      setCopied(true)
+      setCopiedAction('dm')
+    } catch {
+      // fallback
+    }
+
+    const isMobile =
+      typeof navigator !== 'undefined' &&
+      /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+
+    // ig.me/m/ is Meta's official universal deep link that opens directly into the 1-on-1 DM chat
+    if (isMobile) {
+      // On mobile Safari / Chrome, direct location.href hands off to the native Instagram app DM screen
+      window.location.href = INSTAGRAM_DM_URL
+    } else {
+      // On desktop, open in a new tab
+      window.open(INSTAGRAM_DM_URL, '_blank', 'noopener,noreferrer')
+    }
+
+    setTimeout(() => {
+      setCopied(false)
+      setCopiedAction(null)
+    }, 4000)
+  }
+
+  async function handleOpenDesktopApp() {
     try {
       await navigator.clipboard.writeText(message)
       setCopied(true)
@@ -48,26 +76,8 @@ export default function InstagramCheckoutModal({ isOpen, onClose, message }: Pro
       // fallback
     }
 
-    // Launch native Instagram App on laptop or mobile phone
+    // Launch native Windows / Mac Instagram desktop application
     window.location.href = INSTAGRAM_APP_URL
-
-    setTimeout(() => {
-      setCopied(false)
-      setCopiedAction(null)
-    }, 4000)
-  }
-
-  async function handleOpenWeb() {
-    try {
-      await navigator.clipboard.writeText(message)
-      setCopied(true)
-      setCopiedAction('web')
-    } catch {
-      // fallback
-    }
-
-    // Open Instagram Web in a new tab
-    window.open(INSTAGRAM_URL, '_blank', 'noopener,noreferrer')
 
     setTimeout(() => {
       setCopied(false)
@@ -138,10 +148,10 @@ export default function InstagramCheckoutModal({ isOpen, onClose, message }: Pro
                 </div>
                 <div>
                   <h3 className="text-xs sm:text-sm font-medium text-foreground">
-                    Launch Instagram &amp; copy order
+                    Copy order &amp; open DM chat
                   </h3>
                   <p className="text-xs text-muted-foreground leading-relaxed mt-0.5">
-                    Tap below: your order is auto-copied and opens your logged-in Instagram application.
+                    Tap below: your order is auto-copied and opens our Instagram DM chat directly.
                   </p>
                 </div>
               </div>
@@ -153,10 +163,10 @@ export default function InstagramCheckoutModal({ isOpen, onClose, message }: Pro
                 </div>
                 <div>
                   <h3 className="text-xs sm:text-sm font-medium text-foreground">
-                    Paste &amp; send in DM
+                    Paste &amp; hit send
                   </h3>
                   <p className="text-xs text-muted-foreground leading-relaxed mt-0.5">
-                    Tap Message, paste your order (Ctrl+V), and SAZÉ will confirm sizing and shipping 💛
+                    Paste in the chat box and hit send — SAZÉ will confirm sizing and shipping 💛
                   </p>
                 </div>
               </div>
@@ -165,45 +175,44 @@ export default function InstagramCheckoutModal({ isOpen, onClose, message }: Pro
             {/* Your Message Box */}
             <div className="mb-4 sm:mb-5">
               <p className="text-[10px] tracking-[0.18em] uppercase font-semibold text-gold mb-1.5" style={{ fontFamily: 'var(--font-jost)' }}>
-                Your order message
+                Your order message (auto-copied)
               </p>
               <div className="bg-white/90 dark:bg-card/80 border border-border/70 rounded-xl p-3 sm:p-3.5 text-xs leading-relaxed max-h-28 sm:max-h-36 overflow-y-auto whitespace-pre-wrap font-sans text-foreground/90 shadow-inner select-text">
                 {message}
               </div>
             </div>
 
-            {/* Primary Action Button: Opens native Instagram App */}
+            {/* Primary Action Button: Opens direct DM chat on mobile & web */}
             <motion.button
               type="button"
-              onClick={handleOpenApp}
+              onClick={handleOpenDM}
               whileHover={{ scale: 1.01 }}
               whileTap={{ scale: 0.98 }}
               className="w-full min-h-[48px] sm:min-h-[50px] rounded-full bg-gold hover:bg-gold/90 text-primary-foreground font-medium text-sm flex items-center justify-center gap-2.5 shadow-lg shadow-gold/20 transition-colors"
               style={{ fontFamily: 'var(--font-jost)', letterSpacing: '0.04em' }}
             >
-              {copied && copiedAction === 'app' ? (
+              {copied && copiedAction === 'dm' ? (
                 <>
                   <Check size={18} className="text-primary-foreground" />
-                  <span>Copied! Opening Instagram App…</span>
+                  <span>Copied! Opening DM chat…</span>
                 </>
               ) : (
                 <>
                   <InstagramIcon size={19} />
-                  <span>Open in Instagram App &amp; paste</span>
+                  <span>Open Instagram DM &amp; paste</span>
                 </>
               )}
             </motion.button>
 
-            {/* Secondary Action Option: Web Browser */}
+            {/* Secondary Action Option for Laptop App Users */}
             <div className="mt-3 text-center">
               <button
                 type="button"
-                onClick={handleOpenWeb}
+                onClick={handleOpenDesktopApp}
                 className="text-xs text-muted-foreground hover:text-gold transition-colors inline-flex items-center gap-1.5 py-1 underline-offset-4 hover:underline"
                 style={{ fontFamily: 'var(--font-jost)' }}
               >
-                <span>Or open in web browser (instagram.com)</span>
-                <ExternalLink size={13} />
+                <span>Using laptop? Open in Instagram Desktop App &rarr;</span>
               </button>
             </div>
 
