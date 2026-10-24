@@ -803,13 +803,18 @@
   <div class="app-wrapper">
 
     <!-- Top Toolbar -->
-    <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;" class="header-toolbar">
+    <div style="display: flex; justify-content: space-between; width: 100%; align-items: center; gap: 8px; flex-wrap: wrap;" class="header-toolbar">
       <span style="font-size: 12px; color: var(--gold); font-weight: 500; display: flex; align-items: center; gap: 5px;">
         <span>🎬</span> 15s Story Ad (Clean • No Sound)
       </span>
-      <button class="ctrl-btn" onclick="toggleCleanRecordMode()" id="cleanModeBtn" title="Hides player controls for recording">
-        <span>📹</span> Clean Record Mode
-      </button>
+      <div style="display: flex; gap: 8px;">
+        <button class="ctrl-btn" onclick="startAutoRecording()" id="autoRecordBtn" style="background: rgba(212, 183, 121, 0.2); border-color: var(--gold); color: var(--cream);" title="Automatically record the 15-second ad and download video file">
+          <span>🔴</span> Auto Record &amp; Download Video
+        </button>
+        <button class="ctrl-btn" onclick="toggleCleanRecordMode()" id="cleanModeBtn" title="Hides player controls for recording">
+          <span>📹</span> Clean Record Mode
+        </button>
+      </div>
     </div>
 
     <!-- Phone Viewport Stage (9:16) -->
@@ -1366,6 +1371,81 @@
 
     function triggerIgDirect() {
       window.open('https://ig.me/m/_saze.in_', '_blank');
+    }
+
+    // ── 1-Click Screen Recorder & Video Downloader ──
+    async function startAutoRecording() {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getDisplayMedia) {
+        alert("In-browser recording requires Chrome, Edge, or Firefox on desktop.\n\nAlternatively, you can record using Windows Snipping Tool (Win + Shift + R) or screen-record directly on your phone!");
+        return;
+      }
+
+      const btn = document.getElementById('autoRecordBtn');
+      const originalText = btn.innerHTML;
+      btn.innerHTML = '<span>⏳</span> Select tab...';
+
+      try {
+        const stream = await navigator.mediaDevices.getDisplayMedia({
+          video: {
+            displaySurface: "browser",
+            frameRate: { ideal: 60, max: 60 }
+          },
+          audio: false
+        });
+
+        let mimeType = 'video/mp4';
+        if (!MediaRecorder.isTypeSupported('video/mp4')) {
+          mimeType = MediaRecorder.isTypeSupported('video/webm;codecs=vp9')
+            ? 'video/webm;codecs=vp9'
+            : 'video/webm';
+        }
+
+        const recorder = new MediaRecorder(stream, {
+          mimeType: mimeType,
+          videoBitsPerSecond: 6000000
+        });
+
+        const chunks = [];
+        recorder.ondataavailable = (e) => {
+          if (e.data.size > 0) chunks.push(e.data);
+        };
+
+        recorder.onstop = () => {
+          document.body.classList.remove('clean-mode');
+          btn.innerHTML = originalText;
+          stream.getTracks().forEach(track => track.stop());
+
+          const ext = mimeType.includes('mp4') ? 'mp4' : 'webm';
+          const blob = new Blob(chunks, { type: mimeType });
+          const downloadUrl = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.style.display = 'none';
+          a.href = downloadUrl;
+          a.download = `saze-15s-instagram-ad.${ext}`;
+          document.body.appendChild(a);
+          a.click();
+          setTimeout(() => {
+            document.body.removeChild(a);
+            URL.revokeObjectURL(downloadUrl);
+          }, 1500);
+        };
+
+        btn.innerHTML = '<span>🔴</span> Recording (15s)...';
+        document.body.classList.add('clean-mode');
+        restartVideo();
+        recorder.start(200);
+
+        setTimeout(() => {
+          if (recorder.state === 'recording') {
+            recorder.stop();
+          }
+        }, 15400);
+
+      } catch (err) {
+        console.warn('Screen recording cancelled or failed:', err);
+        btn.innerHTML = originalText;
+        document.body.classList.remove('clean-mode');
+      }
     }
   </script>
 </body>
